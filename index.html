@@ -1,9 +1,24 @@
 <html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="interface.css" />
-  </head>
-  <body>
-    <button onClick="venture(1,player)">
-    <script type="text/javascript" src="main.js"></script>
-  </body>
+	<head>
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="interface.css"/>
+	</head>
+	<body>
+		<h1>RESOURCES</h1>
+		<button onClick="scourLandscape(1,'player')">Scour Landscape</button><br/>
+		<span id="land">0</span> land available to stake<br/>
+		<button onClick="stakeLand(1,'player')">Stake Land</button><br/>
+		<span id="stakedLand">0</span> land available to mine<br/>
+		<button onClick="mineStakes(1,'player')">Mine for Pitchblende</button><br/>
+		<span id="pitchblende">0</span> pitchblende available to process<br/>
+		<button onClick="refinePitch(1,'player')">Process Pitchblende</button><br/>
+		<span id="uraniumOre">0</span> processed ore ready to sell<br/>
+		<button onClick="sellUranium(1,'player')">Sell Uranium</button><br/>
+		<span id="money">0</span> dollars<br/>
+		<h1>BUILDINGS</h1>
+		<button onClick="buyBuilding(1,'dogs')"></button><br/>
+		Dogs: <span id="dogs">0</span><br/>
+		Dog Price:<span id="dogPrice">10</span> dollars
+		<script type="text/javascript" src="main.js"></script>
+	</body>
 </html>
