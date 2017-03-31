@@ -1,33 +1,201 @@
+if (typeof(Storage) == "undefined") {
+    alert("This browser does not support HTML5 localStorage, which this game uses to save data between sessions.\nIf you wish to be able to save your progress, switch to a supported browser.");
+};
+
 //declare variables
-var land = 0;
-var stakedLand = 0;
-var pitchblende = 0;
-var uraniumOre = 0;
-var money = 10000;
-
-var dogs = 0;
-var stakebots = 0;
-var minecrafters = 0;
-var labkits = 0;
-var stands = 0;
-
-var landps = 0;
-var stakedLandps = 0;
-var pitchblendeps = 0;
-var uraniumOreps = 0;
-var moneyps = 0;
+var ticks = 0;
+var sessionTicks = 0;
+var datetime = new Date();
+datetime.setFullYear(1955);
+var saveInterval = 60;
 
 var buyMode = 1;
+var debugMode = false;
 
-var buildingSpanIds = {dogs:"dogs",stakebots:"stakebots",minecrafters:"minecrafters",labkits:"labkits",stands:"stands"};
-var buildingSpanPriceIds = {dogs:"dogPrice",stakebots:"stakebotPrice",minecrafters:"minecrafterPrice",labkits:"labkitPrice",stands:"standPrice"};
-var tierOneObject = {dogs:dogs,stakebots:stakebots,minecrafters:minecrafters,labkits:labkits,stands:stands};
-var priceObject = {dogs:10,stakebots:15,minecrafters:25,labkits:50,stands:100};
-var initPriceObject = {dogs:10,stakebots:15,minecrafters:25,labkits:50,stands:100};
-var priceMultObject = {dogs:1.07,stakebots:1.08,minecrafters:1.09,labkits:1.10,stands:1.11};
-var resourcePsObject = {dogs:0.1,stakebots:0.1,minecrafters:0.1,labkits:0.1,stands:0.1}; //base resource each building converts per second
-var currentPsObject = {dogs:0,stakebots:0,minecrafters:0,labkits:0,stands:0}; //actual resource output per second
-var conversionEfficiencyObject = {landToStakedLand:0.9,stakedLandToPitchblende:0.9,pitchblendeToUraniumOre:0.9,uraniumOreToMoney:0.9}; //how efficiently each resource converts to the next one
+var clickPower = 1;
+var clickUpgradePrice = 10;
+var clickMult = 2.5;
+var mouseUpgradeButton = document.getElementById("mouseUpgradeButton");
+
+var buttonObject = {
+	dogButton: document.getElementById("dogButton"),
+	stakebotButton: document.getElementById("stakebotButton"),
+	minecrafterButton: document.getElementById("minecrafterButton"),
+	labkitButton: document.getElementById("labkitButton"),
+	standButton: document.getElementById("standButton")
+};
+var buildingSpanIds = {
+	dogs: "dogs",
+	stakebots: "stakebots",
+	minecrafters: "minecrafters",
+	labkits: "labkits",
+	stands: "stands"
+};
+var buildingSpanPriceIds = {
+	dogs: "dogPrice",
+	stakebots: "stakebotPrice",
+	minecrafters: "minecrafterPrice",
+	labkits: "labkitPrice",
+	stands: "standPrice"
+};
+var buildingButtons = {
+	dogButton: buildingSpanIds.dogs,
+	stakebotButton: buildingSpanIds.stakebots,
+	minecrafterButton: buildingSpanIds.minecrafters,
+	labkitButton: buildingSpanIds.labkits,
+	standButton: buildingSpanIds.stands
+};
+var singularButtonNames = {
+	dogButton: buildingSpanIds.dogs.slice(0,-1),
+	stakebotButton: buildingSpanIds.stakebots.slice(0,-1),
+	minecrafterButton: buildingSpanIds.minecrafters.slice(0,-1),
+	labkitButton: buildingSpanIds.labkits.slice(0,-1),
+	standButton: buildingSpanIds.stands.slice(0,-1)
+};
+
+var tierOneObject = {
+	dogs: 0,
+	stakebots: 0,
+	minecrafters: 0,
+	labkits: 0,
+	stands: 0
+};
+var priceObject = {
+	dogs: 10,
+	stakebots: 15,
+	minecrafters: 25,
+	labkits: 50,
+	stands: 100
+};
+var initPriceObject = {
+	dogs: 10,
+	stakebots: 15,
+	minecrafters: 25,
+	labkits: 50,
+	stands: 100
+};
+var priceMultObject = {
+	dogs: 1.11,
+	stakebots: 1.10,
+	minecrafters: 1.09,
+	labkits: 1.08,
+	stands: 1.07
+};
+var resourceObject = {
+	land: 0,
+	stakedLand: 0,
+	pitchblende: 0,
+	uraniumOre: 0,
+	money: 0
+};
+var resourcePsObject = { //base resource each building converts per second
+	dogs: 1.0,
+	stakebots: 1.0,
+	minecrafters: 1.0,
+	labkits: 1.0,
+	stands: 1.0
+};
+var currentPsObject = { //actual resource output per second
+	dogs: 0,
+	stakebots: 0,
+	minecrafters: 0,
+	labkits: 0,
+	stands: 0
+};
+var conversionEfficiencyObject = { //how efficiently each resource converts to the next one
+	scourFactor: 0.5,
+	landToStakedLand: 0.5,
+	stakedLandToPitchblende: 0.5,
+	pitchblendeToUraniumOre: 0.5,
+	uraniumOreToMoney: 0.5
+};
+var conversionAssociationObject = {
+	dogs: "scourFactor",
+	stakebots: "landToStakedLand",
+	minecrafters: "stakedLandToPitchblende",
+	labkits: "pitchblendeToUraniumOre",
+	stands: "uraniumOreToMoney",
+	scourFactor: "dogEfficiency",
+	landToStakedLand: "stakebotEfficiency",
+	stakedLandToPitchblende: "minecrafterEfficiency",
+	pitchblendeToUraniumOre: "labkitEfficiency",
+	uraniumOreToMoney: "standEfficiency"
+};
+
+var tierOneUpgradeObject = {
+	dogs: 0,
+	stakebots: 0,
+	minecrafters: 0,
+	labkits: 0,
+	stands: 0
+};
+var initUpgradePriceObject = {
+	dogs: 20,
+	stakebots: 30,
+	minecrafters: 50,
+	labkits: 90,
+	stands: 150
+};
+var upgradePriceObject = {
+	dogs: 20,
+	stakebots: 30,
+	minecrafters: 50,
+	labkits: 90,
+	stands: 150
+};
+var upgradePriceMultObject = {
+	dogs: 1.1,
+	stakebots: 1.21,
+	minecrafters: 1.331,
+	labkits: 1.4641,
+	stands: 1.61051
+};
+var upgradeSpanButtonIds = {
+	dogs: document.getElementById("dogUpgradeButton"),
+	stakebots: document.getElementById("stakebotUpgradeButton"),
+	minecrafters: document.getElementById("minecrafterUpgradeButton"),
+	labkits: document.getElementById("labkitUpgradeButton"),
+	stands: document.getElementById("standUpgradeButton")
+};
+
+var prestige = 0;
+
+var maxBuyableButtonObject = {
+	dogButton: calcMaxBuyable(initPriceObject[buildingSpanIds.dogs],priceMultObject[buildingSpanIds.dogs],tierOneObject[buildingSpanIds.dogs],money),
+	stakebotButton: calcMaxBuyable(initPriceObject[buildingSpanIds.stakebots],priceMultObject[buildingSpanIds.stakebots],tierOneObject[buildingSpanIds.stakebots],money),
+	minecrafterButton: calcMaxBuyable(initPriceObject[buildingSpanIds.minecrafters],priceMultObject[buildingSpanIds.minecrafters],tierOneObject[buildingSpanIds.minecrafters],money),
+	labkitButton: calcMaxBuyable(initPriceObject[buildingSpanIds.labkits],priceMultObject[buildingSpanIds.labkits],tierOneObject[buildingSpanIds.labkits],money),
+	standButton: calcMaxBuyable(initPriceObject[buildingSpanIds.stands],priceMultObject[buildingSpanIds.stands],tierOneObject[buildingSpanIds.stands],money)
+};
+
+var gamesave = {
+	ticks: ticks,
+	datetime: datetime,
+	saveInterval: saveInterval,
+	tierOneObject: tierOneObject,
+	priceObject: priceObject,
+	priceMultObject: priceMultObject,
+	resourceObject: resourceObject,
+	resourcePsObject: resourcePsObject,
+	currentPsObject: currentPsObject,
+	conversionEfficiencyObject: conversionEfficiencyObject,
+	tierOneUpgradeObject: tierOneUpgradeObject,
+	upgradePriceObject: upgradePriceObject,
+	upgradePriceMultObject: upgradePriceMultObject,
+	clickPower: clickPower,
+	clickUpgradePrice: clickUpgradePrice,
+	clickMult: clickMult,
+	prestige: prestige
+};
+
+//developer/debug mode
+if (debugMode == true) {
+	for (var i in resourceObject) {
+		if (resourceObject.hasOwnProperty(i)) {
+			resourceObject[i] = 1000000;
+		};
+	};
+};
 
 //rounding utility function
 function round(value, precision) {
@@ -35,112 +203,129 @@ function round(value, precision) {
     return Math.round(value * multiplier) / multiplier;
 };
 
+//time counting function
+function clocktick() {
+	ticks = ticks + 1;
+	sessionTicks = sessionTicks + 1;
+};
+
 //declare resource functions
 function scourLandscape(number,actor) {
 	if (actor == "player") { //if the player clicks the button add the number
-		land = land + number;
+		resourceObject.land = resourceObject.land + number;
 	} else { //if the function is called by something else, like a building, use the number as a multiplier for the resource per second
-		land = land + number * resourcePsObject[actor];
+		resourceObject.land = resourceObject.land + number * resourcePsObject[actor] * conversionEfficiencyObject.scourFactor;
 	};
-	document.getElementById("land").innerHTML = round(land,3);
+	document.getElementById("land").innerHTML = round(resourceObject.land,3);
 };
 function stakeLand(number,actor) {
 	if (actor == "player") {
-		if (land >= number) { //if there is enough land to make the purchase
-			land = land - number; //take the land
-			stakedLand = stakedLand + number * conversionEfficiencyObject.landToStakedLand; //increase the staked land with a 1:1 ratio
+		if (resourceObject.land >= number) { //if there is enough land to make the purchase
+			resourceObject.land = resourceObject.land - number; //take the land
+			resourceObject.stakedLand = resourceObject.stakedLand + number; //increase the staked land with a 1:1 ratio
 		} else { //if there's not enough land then just take all the land it can
-			stakedLand = stakedLand + land * conversionEfficiencyObject.landToStakedLand;
-			land = 0;
+			resourceObject.stakedLand = resourceObject.stakedLand + resourceObject.land;
+			resourceObject.land = 0;
 		};
 	} else { //if the function is called by a building or something
-		if (land >= number * resourcePsObject[actor]) { //and the player can afford the amount the building wants to process per second
-			land = land - number * resourcePsObject[actor]; //take the land
-			stakedLand = stakedLand + number * resourcePsObject[actor] * conversionEfficiencyObject.landToStakedLand; //add the right amount (remember the number is a multiplier)
+		if (resourceObject.land >= number * resourcePsObject[actor]) { //and the player can afford the amount the building wants to process per second
+			resourceObject.land = resourceObject.land - number * resourcePsObject[actor]; //take the land
+			resourceObject.stakedLand = resourceObject.stakedLand + number * resourcePsObject[actor] * conversionEfficiencyObject.landToStakedLand; //add the right amount (remember the number is a multiplier)
 		} else {
-			stakedLand = stakedLand + land * conversionEfficiencyObject.landToStakedLand; //if the player can't afford it take all of it anyway
-			land = 0;
+			resourceObject.stakedLand = resourceObject.stakedLand + resourceObject.land * conversionEfficiencyObject.landToStakedLand; //if the player can't afford it take all of it anyway
+			resourceObject.land = 0;
 		};
 	};
-	document.getElementById("land").innerHTML = round(land,3);
-	document.getElementById("stakedLand").innerHTML = round(stakedLand,3);
+	document.getElementById("land").innerHTML = round(resourceObject.land,3);
+	document.getElementById("stakedLand").innerHTML = round(resourceObject.stakedLand,3);
 };
 function mineStakes(number,actor) {
 	if (actor == "player") {
-		if (stakedLand >= number) { //you know the drill
-			stakedLand = stakedLand - number;
-			pitchblende = pitchblende + number * conversionEfficiencyObject.stakedLandToPitchblende;
+		if (resourceObject.stakedLand >= number) { //you know the drill
+			resourceObject.stakedLand = resourceObject.stakedLand - number;
+			resourceObject.pitchblende = resourceObject.pitchblende + number;
 		} else {
-			pitchblende = pitchblende + stakedLand * conversionEfficiencyObject.stakedLandToPitchblende;
-			stakedLand = 0;
+			resourceObject.pitchblende = resourceObject.pitchblende + resourceObject.stakedLand;
+			resourceObject.stakedLand = 0;
 		};
 	} else {
-		if (stakedLand >= number * resourcePsObject[actor]) {
-			stakedLand = stakedLand - number * resourcePsObject[actor];
-			pitchblende = pitchblende + number * resourcePsObject[actor] * conversionEfficiencyObject.stakedLandToPitchblende;
+		if (resourceObject.stakedLand >= number * resourcePsObject[actor]) {
+			resourceObject.stakedLand = resourceObject.stakedLand - number * resourcePsObject[actor];
+			resourceObject.pitchblende = resourceObject.pitchblende + number * resourcePsObject[actor] * conversionEfficiencyObject.stakedLandToPitchblende;
 		} else {
-			pitchblende = pitchblende + stakedLand * conversionEfficiencyObject.stakedLandToPitchblende;
-			stakedLand = 0;
+			resourceObject.pitchblende = resourceObject.pitchblende + resourceObject.stakedLand * conversionEfficiencyObject.stakedLandToPitchblende;
+			resourceObject.stakedLand = 0;
 		};
 	};
-	document.getElementById("stakedLand").innerHTML = round(stakedLand,3);
-	document.getElementById("pitchblende").innerHTML = round(pitchblende,3);
+	document.getElementById("stakedLand").innerHTML = round(resourceObject.stakedLand,3);
+	document.getElementById("pitchblende").innerHTML = round(resourceObject.pitchblende,3);
 };
 function refinePitch(number,actor) {
 	if (actor == "player") {
-		if (pitchblende >= number) {
-			pitchblende = pitchblende - number;
-			uraniumOre = uraniumOre + number * conversionEfficiencyObject.pitchblendeToUraniumOre;
+		if (resourceObject.pitchblende >= number) {
+			resourceObject.pitchblende = resourceObject.pitchblende - number;
+			resourceObject.uraniumOre = resourceObject.uraniumOre + number;
 		} else {
-			uraniumOre = uraniumOre + pitchblende * conversionEfficiencyObject.pitchblendeToUraniumOre;
-			pitchblende = 0;
+			resourceObject.uraniumOre = resourceObject.uraniumOre + resourceObject.pitchblende;
+			resourceObject.pitchblende = 0;
 		};
 	} else {
-		if (pitchblende >= number * resourcePsObject[actor]) {
-			pitchblende = pitchblende - number * resourcePsObject[actor];
-			uraniumOre = uraniumOre + number * resourcePsObject[actor] * conversionEfficiencyObject.pitchblendeToUraniumOre;
+		if (resourceObject.pitchblende >= number * resourcePsObject[actor]) {
+			resourceObject.pitchblende = resourceObject.pitchblende - number * resourcePsObject[actor];
+			resourceObject.uraniumOre = resourceObject.uraniumOre + number * resourcePsObject[actor] * conversionEfficiencyObject.pitchblendeToUraniumOre;
 		} else {
-			uraniumOre = uraniumOre + pitchblende * conversionEfficiencyObject.pitchblendeToUraniumOre;
-			pitchblende = 0;
+			resourceObject.uraniumOre = resourceObject.uraniumOre + resourceObject.pitchblende * conversionEfficiencyObject.pitchblendeToUraniumOre;
+			resourceObject.pitchblende = 0;
 		};
 	};
-	document.getElementById("pitchblende").innerHTML = round(pitchblende,3);
-	document.getElementById("uraniumOre").innerHTML = round(uraniumOre,3);
+	document.getElementById("pitchblende").innerHTML = round(resourceObject.pitchblende,3);
+	document.getElementById("uraniumOre").innerHTML = round(resourceObject.uraniumOre,3);
 };
 function sellUranium(number,actor) {
 	if (actor == "player") {
-		if (uraniumOre >= number) {
-			uraniumOre = uraniumOre - number;
-			money = money + number * conversionEfficiencyObject.uraniumOreToMoney;
+		if (resourceObject.uraniumOre >= number) {
+			resourceObject.uraniumOre = resourceObject.uraniumOre - number;
+			resourceObject.money = resourceObject.money + number;
 		} else {
-			money = money + uraniumOre * conversionEfficiencyObject.uraniumOreToMoney;
-			uraniumOre = 0;
+			resourceObject.money = resourceObject.money + resourceObject.uraniumOre;
+			resourceObject.uraniumOre = 0;
 		};
 	} else {
-		if (uraniumOre >= number * resourcePsObject[actor]) {
-			uraniumOre = uraniumOre - number * resourcePsObject[actor];
-			money = money + number * resourcePsObject[actor] * conversionEfficiencyObject.uraniumOreToMoney;
+		if (resourceObject.uraniumOre >= number * resourcePsObject[actor]) {
+			resourceObject.uraniumOre = resourceObject.uraniumOre - number * resourcePsObject[actor];
+			resourceObject.money = resourceObject.money + number * resourcePsObject[actor] * conversionEfficiencyObject.uraniumOreToMoney;
 		} else {
-			money = money + uraniumOre * conversionEfficiencyObject.uraniumOreToMoney;
-			uraniumOre = 0;
+			resourceObject.money = resourceObject.money + resourceObject.uraniumOre * conversionEfficiencyObject.uraniumOreToMoney;
+			resourceObject.uraniumOre = 0;
 		};
 	};
-	document.getElementById("uraniumOre").innerHTML = round(uraniumOre,3);
-	document.getElementById("money").innerHTML = round(money,3);
+	document.getElementById("uraniumOre").innerHTML = round(resourceObject.uraniumOre,3);
+	document.getElementById("money").innerHTML = round(resourceObject.money,3);
 };
 
 function costCalc(price,priceMult,building,number) {
 	return price * Math.pow(priceMult,building) * (Math.pow(priceMult,number) - 1) / (priceMult - 1);
 };
+function calcMaxBuyable(price,priceMult,building,funds) {
+	var result = Math.trunc(Math.log( -funds * ( 1 - priceMult ) / price + Math.pow(priceMult,building) ) / Math.log(priceMult) - building);
+	if (result == 0) {
+		result = 1;
+	};
+	return result;
+};
 
 function updatePriceOf(building) {
 	switch (buyMode) {
 		case "max":
-		//todo later
+		document.getElementById(buildingSpanPriceIds[building]).innerHTML = round(costCalc(initPriceObject[building],priceMultObject[building],tierOneObject[building],calcMaxBuyable(initPriceObject[building],priceMultObject[building],tierOneObject[building],resourceObject.money)),3);
 		break;
 		default:
 		document.getElementById(buildingSpanPriceIds[building]).innerHTML = round(costCalc(initPriceObject[building],priceMultObject[building],tierOneObject[building],buyMode),3);
 	};
+};
+
+function updateUpgradePriceOf(upgrade) {
+		upgradeSpanButtonIds[upgrade].innerHTML = "Improve " + upgrade.toString().slice(0,-1) + " efficiency by 10% ($" + round(costCalc(initUpgradePriceObject[upgrade],upgradePriceMultObject[upgrade],tierOneUpgradeObject[upgrade],1),3) + ")";
 };
 
 //declare building buying function
@@ -176,16 +361,70 @@ function buyBuildings(number,type) {
 			priceMult = priceMultObject[buildingToBuy];
 			break;
 	};
+	if (buyMode == "max") {
+		number = calcMaxBuyable(price,priceMult,tierOneObject[buildingToBuy],resourceObject.money);
+	};
 	totalCost = costCalc(price,priceMult,tierOneObject[buildingToBuy],number);
-	if (money >= totalCost) {
-		money = money - totalCost;
+	if (resourceObject.money >= totalCost) {
+		resourceObject.money = resourceObject.money - totalCost;
 		tierOneObject[buildingToBuy] = tierOneObject[buildingToBuy] + number;
 		priceObject[buildingToBuy] = priceObject[buildingToBuy]*Math.pow(priceMult,number);
 	};
-	updatePriceOf(buildingToBuy);
-	//document.getElementById(buildingSpanPriceIds[buildingToBuy]).innerHTML = round(priceObject[buildingToBuy],3);
+	for (var i in tierOneObject) {
+		if (tierOneObject.hasOwnProperty(i)) {
+			updatePriceOf(i);
+		};
+	};
 	document.getElementById(buildingSpanIds[buildingToBuy]).innerHTML = round(tierOneObject[buildingToBuy],3);
-	document.getElementById("money").innerHTML = round(money,3);
+	document.getElementById("money").innerHTML = round(resourceObject.money,3);
+};
+
+function buyUpgrades(number, type) {
+	var upgradeToBuy = ""; //declare upgrade variable
+	var price = 0; //declare acting price
+	var priceMult = 0; //declare acting price multiplier
+	var totalCost = 0; //declare temporary total cost
+	switch (type) { //choose upgrade based on type
+		case 'dogs':
+			upgradeToBuy = "dogs"; //set temporary variables
+			price = initUpgradePriceObject[upgradeToBuy];
+			priceMult = upgradePriceMultObject[upgradeToBuy];
+			break;
+		case 'stakebots':
+			upgradeToBuy = "stakebots";
+			price = initUpgradePriceObject[upgradeToBuy];
+			priceMult = upgradePriceMultObject[upgradeToBuy];
+			break;
+		case 'minecrafters':
+			upgradeToBuy = "minecrafters";
+			price = initUpgradePriceObject[upgradeToBuy];
+			priceMult = upgradePriceMultObject[upgradeToBuy];
+			break;
+		case 'labkits':
+			upgradeToBuy = "labkits";
+			price = initUpgradePriceObject[upgradeToBuy];
+			priceMult = upgradePriceMultObject[upgradeToBuy];
+			break;
+		case 'stands':
+			upgradeToBuy = "stands";
+			price = initUpgradePriceObject[upgradeToBuy];
+			priceMult = upgradePriceMultObject[upgradeToBuy];
+			break;
+	};
+	totalCost = costCalc(price,priceMult,tierOneUpgradeObject[upgradeToBuy],number);
+	if (resourceObject.money >= totalCost) {
+		resourceObject.money = resourceObject.money - totalCost;
+		tierOneUpgradeObject[upgradeToBuy] = tierOneUpgradeObject[upgradeToBuy] + number;
+		upgradePriceObject[upgradeToBuy] = upgradePriceObject[upgradeToBuy]*Math.pow(priceMult,number);
+		conversionEfficiencyObject[conversionAssociationObject[upgradeToBuy]] = conversionEfficiencyObject[conversionAssociationObject[upgradeToBuy]] + (0.1 * number);
+	};
+	for (var i in tierOneUpgradeObject) {
+		if (tierOneUpgradeObject.hasOwnProperty(i)) {
+			updateUpgradePriceOf(i);
+		};
+	};
+	document.getElementById(conversionAssociationObject[conversionAssociationObject[upgradeToBuy]]).innerHTML = conversionEfficiencyObject[conversionAssociationObject[upgradeToBuy]];
+	document.getElementById("money").innerHTML = round(resourceObject.money,3);
 };
 
 function switchBuyMode() {
@@ -203,11 +442,29 @@ function switchBuyMode() {
 		document.getElementById("buyMode").innerHTML = modeArray[3];
 		buyMode = "max";
 		break;
+		case "max":
+		document.getElementById("buyMode").innerHTML = modeArray[0];
+		buyMode = 1;
+		break;
 	};
 	for (var i in tierOneObject) {
 		if (tierOneObject.hasOwnProperty(i)) {
 			updatePriceOf(i);
 		};
+	};
+	for (var i in tierOneUpgradeObject) {
+		if (tierOneUpgradeObject.hasOwnProperty(i)) {
+			updateUpgradePriceOf(i);
+		};
+	};
+};
+
+function upgradeMouse() {
+	if (resourceObject.money >= clickUpgradePrice) {
+		resourceObject.money = resourceObject.money - clickUpgradePrice;
+		clickUpgradePrice = clickUpgradePrice * clickMult;
+		clickPower = clickPower * 2;
+		mouseUpgradeButton.innerHTML = "Double click power ($" + round(clickUpgradePrice,3).toString() + ")";
 	};
 };
 
@@ -216,32 +473,156 @@ function calculatePsValues() { //n buildings * base rps * confactor - n (next) b
 	currentPsObject.labkits = resourcePsObject.labkits * tierOneObject.labkits * conversionEfficiencyObject.pitchblendeToUraniumOre - resourcePsObject.stands * tierOneObject.stands;
 	currentPsObject.minecrafters = resourcePsObject.minecrafters * tierOneObject.minecrafters * conversionEfficiencyObject.stakedLandToPitchblende - resourcePsObject.labkits * tierOneObject.labkits;
 	currentPsObject.stakebots = resourcePsObject.stakebots * tierOneObject.stakebots * conversionEfficiencyObject.landToStakedLand - resourcePsObject.minecrafters * tierOneObject.minecrafters;
-	currentPsObject.dogs = resourcePsObject.dogs * tierOneObject.dogs - resourcePsObject.stakebots * tierOneObject.stakebots;
-	landps = currentPsObject.dogs;
-	stakedLandps = currentPsObject.stakebots;
-	pitchblendeps = currentPsObject.minecrafters;
-	uraniumOreps = currentPsObject.labkits;
-	moneyps = currentPsObject.stands;
-	document.getElementById("landps").innerHTML = round(landps,3);
-	document.getElementById("stakedLandps").innerHTML = round(stakedLandps,3);
-	document.getElementById("pitchblendeps").innerHTML = round(pitchblendeps,3);
-	document.getElementById("uraniumOreps").innerHTML = round(uraniumOreps,3);
-	document.getElementById("moneyps").innerHTML = round(moneyps,3);
+	currentPsObject.dogs = resourcePsObject.dogs * tierOneObject.dogs * conversionEfficiencyObject.scourFactor - resourcePsObject.stakebots * tierOneObject.stakebots;
+	document.getElementById("landps").innerHTML = round(currentPsObject.dogs,3);
+	document.getElementById("stakedLandps").innerHTML = round(currentPsObject.stakebots,3);
+	document.getElementById("pitchblendeps").innerHTML = round(currentPsObject.minecrafters,3);
+	document.getElementById("uraniumOreps").innerHTML = round(currentPsObject.labkits,3);
+	document.getElementById("moneyps").innerHTML = round(currentPsObject.stands,3);
 };
 
 function updateEfficiencies() {
+	document.getElementById("dogEfficiency").innerHTML = round(100 * conversionEfficiencyObject.scourFactor,3);
 	document.getElementById("stakebotEfficiency").innerHTML = round(100 * conversionEfficiencyObject.landToStakedLand,3);
 	document.getElementById("minecrafterEfficiency").innerHTML = round(100 * conversionEfficiencyObject.stakedLandToPitchblende,3);
 	document.getElementById("labkitEfficiency").innerHTML = round(100 * conversionEfficiencyObject.pitchblendeToUraniumOre,3);
 	document.getElementById("standEfficiency").innerHTML = round(100 * conversionEfficiencyObject.uraniumOreToMoney,3);
 };
 
-window.setInterval(function() { //update window every second
-	scourLandscape(tierOneObject.dogs,'dogs');
-	stakeLand(tierOneObject.stakebots,'stakebots');
-	mineStakes(tierOneObject.minecrafters,'minecrafters');
-	refinePitch(tierOneObject.labkits,'labkits');
-	sellUranium(tierOneObject.stands,'stands');
+function updateMaxBuyableButtonObject() {
+	for (var i in maxBuyableButtonObject) {
+		if (maxBuyableButtonObject.hasOwnProperty(i)) {
+			maxBuyableButtonObject[i] = calcMaxBuyable(initPriceObject[buildingButtons[i]],priceMultObject[buildingButtons[i]],tierOneObject[buildingButtons[i]],resourceObject.money);
+		};
+	};
+};
+
+function updateUpgradeButtons() {
+	for (var i in upgradeSpanButtonIds) {
+		if (resourceObject.money < upgradePriceObject[i]) {
+			upgradeSpanButtonIds[i].disabled = true;
+		} else {
+			upgradeSpanButtonIds[i].disabled = false;
+		};
+	};
+	if (resourceObject.money < clickUpgradePrice) {
+		mouseUpgradeButton.disabled = true;
+	} else {
+		mouseUpgradeButton.disabled = false;
+	};
+};
+
+function hardReset() {
+	var result = confirm("Do you really want to hard reset your game?");
+	if (result == true) {
+		localStorage.clear();
+		location.reload();
+	};
+};
+
+if (localStorage.getItem("gamesave") !== null) {
+	gamesave = JSON.parse(localStorage.getItem("gamesave"));
+	if (typeof gamesave.ticks !== undefined) ticks = gamesave.ticks;
+	if (typeof gamesave.datetime !== undefined) startYear = gamesave.datetime;
+	if (typeof gamesave.saveInterval !== undefined) saveInterval = gamesave.saveInterval;
+	if (typeof gamesave.tierOneObject !== undefined) tierOneObject = gamesave.tierOneObject;
+	if (typeof gamesave.priceObject !== undefined) priceObject = gamesave.priceObject;
+	if (typeof gamesave.priceMultObject !== undefined) priceMultObject = gamesave.priceMultObject;
+	if (typeof gamesave.resourceObject !== undefined) resourceObject = gamesave.resourceObject;
+	if (typeof gamesave.resourcePsObject !== undefined) resourcePsObject = gamesave.resourcePsObject;
+	if (typeof gamesave.currentPsObject !== undefined) currentPsObject = gamesave.currentPsObject;
+	if (typeof gamesave.conversionEfficiencyObject !== undefined) conversionEfficiencyObject = gamesave.conversionEfficiencyObject;
+	if (typeof gamesave.tierOneUpgradeObject !== undefined) tierOneUpgradeObject = gamesave.tierOneUpgradeObject;
+	if (typeof gamesave.upgradePriceObject !== undefined) upgradePriceObject = gamesave.upgradePriceObject;
+	if (typeof gamesave.upgradePriceMultObject !== undefined) upgradePriceMultObject = gamesave.upgradePriceMultObject;
+	if (typeof gamesave.clickPower !== undefined) clickPower = gamesave.clickPower;
+	if (typeof gamesave.clickUpgradePrice !== undefined) clickUpgradePrice = gamesave.clickUpgradePrice;
+	if (typeof gamesave.clickMult !== undefined) clickMult = gamesave.clickMult;
+	for (var i in tierOneObject) {
+		if (tierOneObject.hasOwnProperty(i)) {
+			document.getElementById(i).innerHTML = tierOneObject[i];
+		};
+	};
+	for (var i in tierOneUpgradeObject) {
+		if (tierOneUpgradeObject.hasOwnProperty(i)) {
+			document.getElementById(i).innerHTML = tierOneUpgradeObject[i];
+		};
+	};
+	updateEfficiencies();
+	updateMaxBuyableButtonObject();
+	updateUpgradeButtons();
+	mouseUpgradeButton.innerHTML = "Double click power ($" + round(clickUpgradePrice,3).toString() + ")";
+};
+
+function save() {
+	gamesave.ticks = ticks;
+	gamesave.datetime = datetime;
+	gamesave.saveInterval = saveInterval;
+	gamesave.tierOneObject = tierOneObject;
+	gamesave.priceObject = priceObject;
+	gamesave.priceMultObject = priceMultObject;
+	gamesave.resourceObject = resourceObject;
+	gamesave.resourcePsObject = resourcePsObject;
+	gamesave.currentPsObject = currentPsObject;
+	gamesave.conversionEfficiencyObject = conversionEfficiencyObject;
+	gamesave.tierOneUpgradeObject = tierOneUpgradeObject;
+	gamesave.upgradePriceObject = upgradePriceObject;
+	gamesave.upgradePriceMultObject = upgradePriceMultObject;
+	gamesave.clickPower = clickPower;
+	gamesave.clickUpgradePrice = clickUpgradePrice;
+	gamesave.clickMult = clickMult;
+	localStorage.setItem("gamesave",JSON.stringify(gamesave));
+	document.getElementById("lastSave").innerHTML = datetime;
+};
+
+window.setInterval(function() { //update window 20 times per second
+	clocktick();
+	if (ticks % 20 == 0) {
+		datetime.setMilliseconds(1000);
+		document.getElementById("datetime").innerHTML = datetime;
+		document.getElementById("saveInterval").innerHTML = saveInterval;
+		scourLandscape(tierOneObject.dogs,'dogs');
+		stakeLand(tierOneObject.stakebots,'stakebots');
+		mineStakes(tierOneObject.minecrafters,'minecrafters');
+		refinePitch(tierOneObject.labkits,'labkits');
+		sellUranium(tierOneObject.stands,'stands');
+	};
+	if (sessionTicks % (20 * saveInterval) == 0) {
+		save();
+	};
+	updateMaxBuyableButtonObject();
 	calculatePsValues();
 	updateEfficiencies();
-}, 1000);
+	updateUpgradeButtons();
+	for (var i in tierOneObject) {
+		if (tierOneObject.hasOwnProperty(i)) {
+			updatePriceOf(i);
+		};
+	};
+	for (var j in buildingButtons) {
+		if (buildingButtons.hasOwnProperty(j)) {
+			switch (buyMode) {
+				case 1:
+				document.getElementById(j).innerHTML = "Buy " + buyMode.toString() + " " + singularButtonNames[j];
+				break;
+				case "max":
+				switch (maxBuyableButtonObject[j.toString()]) {
+					case 1:
+					document.getElementById(j).innerHTML = "Buy " + maxBuyableButtonObject[j].toString() + " " + singularButtonNames[j];
+					break;
+					default:
+					document.getElementById(j).innerHTML = "Buy " + maxBuyableButtonObject[j].toString() + " " + buildingButtons[j];
+					break;
+					};
+				break;
+				default:
+				document.getElementById(j).innerHTML = "Buy " + buyMode.toString() + " " + buildingButtons[j];
+			};
+			if (document.getElementById(buildingSpanPriceIds[j.slice(0,-6).toString() + 's']).innerHTML > resourceObject.money) {
+				buttonObject[j.toString()].disabled = true;
+			} else {
+				buttonObject[j.toString()].disabled = false;
+			};
+		};
+	};
+}, 50);

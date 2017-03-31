@@ -3,36 +3,56 @@
 		<meta charset="utf-8"/>
 		<link rel="stylesheet" type="text/css" href="interface.css"/>
 	</head>
-	<body>
-		<h1>RESOURCES</h1>
-		<button onClick="scourLandscape(1,'player')">Scour Landscape</button><br/>
-		<span id="land">0</span> land available to stake (<span id="landps">0</span>/s)<br/>
-		<button onClick="stakeLand(1,'player')">Stake Land</button><br/>
-		<span id="stakedLand">0</span> land available to mine (<span id="stakedLandps">0</span>/s)<br/>
-		<button onClick="mineStakes(1,'player')">Mine for Pitchblende</button><br/>
-		<span id="pitchblende">0</span> pitchblende available to process (<span id="pitchblendeps">0</span>/s)<br/>
-		<button onClick="refinePitch(1,'player')">Process Pitchblende</button><br/>
-		<span id="uraniumOre">0</span> processed ore ready to sell (<span id="uraniumOreps">0</span>/s)<br/>
-		<button onClick="sellUranium(1,'player')">Sell Uranium</button><br/>
-		<span id="money">0</span> dollars (<span id="moneyps">0</span>/s)<br/>
-		<h1>BUILDINGS</h1>
-		<button onClick="switchBuyMode()" id="buyMode">Buy x1</button><br />
-		<button onClick="buyBuildings(buyMode,'dogs')" id="dogButton">Buy Dog</button><br/>
-		Dogs: <span id="dogs">0</span><br/>
-		Dog Price: <span id="dogPrice">10</span> dollars<br />
-		<button onClick="buyBuildings(buyMode,'stakebots')" id="stakebotButton">Buy StakeBot</button><br/>
-		StakeBots: <span id="stakebots">0</span> operating at <span id="stakebotEfficiency">90</span>% efficiency<br/>
-		Stakebot Price: <span id="stakebotPrice">15</span> dollars<br />
-		<button onClick="buyBuildings(buyMode,'minecrafters')" id="minecrafterButton">Buy Minecrafter</button><br/>
-		Minecrafters: <span id="minecrafters">0</span> operating at <span id="minecrafterEfficiency">90</span>% efficiency<br/>
-		Minecrafter Price: <span id="minecrafterPrice">25</span> dollars<br />
-		<button onClick="buyBuildings(buyMode,'labkits')" id="labkitButton">Buy Labkit</button><br/>
-		Labkits: <span id="labkits">0</span> operating at <span id="labkitEfficiency">90</span>% efficiency<br/>
-		Labkit Price: <span id="labkitPrice">50</span> dollars<br />
-		<button onClick="buyBuildings(buyMode,'stands')" id="standButton">Buy Stand</button><br/>
-		Stands: <span id="stands">0</span> operating at <span id="standEfficiency">90</span>% efficiency<br/>
-		Stand Price: <span id="standPrice">100</span> dollars<br />
-		<h1>UPGRADES</h1>
+	<body onload="save()">
+		<div id="datetime"></div>
+		<div>
+			<h1>RESOURCES</h1>
+			<button onClick="scourLandscape(clickPower,'player')">Scour Landscape</button><br/>
+			<span id="land">0</span> land available to stake (<span id="landps">0</span>/s)<br/>
+			<button onClick="stakeLand(clickPower,'player')">Stake Land</button><br/>
+			<span id="stakedLand">0</span> land available to mine (<span id="stakedLandps">0</span>/s)<br/>
+			<button onClick="mineStakes(clickPower,'player')">Mine for Pitchblende</button><br/>
+			<span id="pitchblende">0</span> pitchblende available to process (<span id="pitchblendeps">0</span>/s)<br/>
+			<button onClick="refinePitch(clickPower,'player')">Process Pitchblende</button><br/>
+			<span id="uraniumOre">0</span> processed ore ready to sell (<span id="uraniumOreps">0</span>/s)<br/>
+			<button onClick="sellUranium(clickPower,'player')">Sell Uranium</button><br/>
+			<span id="money">0</span> dollars (<span id="moneyps">0</span>/s)<br/>
+		</div>
+		<div>
+			<h1>BUILDINGS</h1>
+			<button onClick="switchBuyMode()" id="buyMode">Buy x1</button><br />
+			<button onClick="buyBuildings(buyMode,'dogs')" id="dogButton">Buy 1 dog</button><br/>
+			Dogs: <span id="dogs">0</span> scouring at <span id="dogEfficiency">50</span>% efficiency<br/>
+			Dog Price: <span id="dogPrice">10</span> dollars<br />
+			<button onClick="buyBuildings(buyMode,'stakebots')" id="stakebotButton">Buy 1 stakeBot</button><br/>
+			StakeBots: <span id="stakebots">0</span> converting at <span id="stakebotEfficiency">50</span>% efficiency<br/>
+			Stakebot Price: <span id="stakebotPrice">15</span> dollars<br />
+			<button onClick="buyBuildings(buyMode,'minecrafters')" id="minecrafterButton">Buy 1 minecrafter</button><br/>
+			Minecrafters: <span id="minecrafters">0</span> converting at <span id="minecrafterEfficiency">50</span>% efficiency<br/>
+			Minecrafter Price: <span id="minecrafterPrice">25</span> dollars<br />
+			<button onClick="buyBuildings(buyMode,'labkits')" id="labkitButton">Buy 1 labkit</button><br/>
+			Labkits: <span id="labkits">0</span> converting at <span id="labkitEfficiency">50</span>% efficiency<br/>
+			Labkit Price: <span id="labkitPrice">50</span> dollars<br />
+			<button onClick="buyBuildings(buyMode,'stands')" id="standButton">Buy 1 stand</button><br/>
+			Stands: <span id="stands">0</span> converting at <span id="standEfficiency">50</span>% efficiency<br/>
+			Stand Price: <span id="standPrice">100</span> dollars<br />
+		</div>
+		<div>
+			<h1>UPGRADES</h1>
+			<button onclick="upgradeMouse()" id="mouseUpgradeButton">Double click power ($10)</button><br/>
+			<button onClick="buyUpgrades(1,'dogs')" id="dogUpgradeButton">Improve dog efficiency by 10% ($20)</button><br/>
+			<button onClick="buyUpgrades(1,'stakebots')" id="stakebotUpgradeButton">Improve stakebot efficiency by 10% ($30)</button><br/>
+			<button onClick="buyUpgrades(1,'minecrafters')" id="minecrafterUpgradeButton">Improve minecrafter efficiency by 10% ($50)</button><br/>
+			<button onClick="buyUpgrades(1,'labkits')" id="labkitUpgradeButton">Improve labkit efficiency by 10% ($90)</button><br/>
+			<button onClick="buyUpgrades(1,'stands')" id="standUpgradeButton">Improve stand efficiency by 10% ($150)</button>
+		</div>
+		<div>
+		<h4>OPTIONS</h4>
+			<button id="hardResetButton" onClick="hardReset()">Hard Reset</button>
+			<button id="saveButton" onClick="save()">Manual Save</button><br/>
+			The game autosaves every <span id="saveInterval">60</span> seconds.<br/>
+			Last save: <span id="lastSave">recently</span>
+		</div>
 		<script type="text/javascript" src="main.js"></script>
 	</body>
 </html>
