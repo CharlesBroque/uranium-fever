@@ -179,6 +179,7 @@ var maxBuyableButtonObject = {
 var cheevos = {
 	achieved: 0,
 	firstLand: {
+		name: "First Land"
 		type: "resource",
 		detect: {
 			land: 1
@@ -187,6 +188,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Land!"
 	},
 	firstStakedLand: {
+		name: "First Staked Land"
 		type: "resource",
 		detect: {
 			stakedLand: 1
@@ -195,6 +197,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Staked Land!"
 	},
 	firstPitchblende: {
+		name: "First Pitchblende"
 		type: "resource",
 		detect: {
 			pitchblende: 1
@@ -203,6 +206,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Pitchblende!"
 	},
 	firstUraniumOre: {
+		name: "First Uranium Ore"
 		type: "resource",
 		detect: {
 			uraniumOre: 1
@@ -211,6 +215,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Uranium Ore!"
 	},
 	firstMoney: {
+		name: "First Money"
 		type: "resource",
 		detect: {
 			money: 1
@@ -219,6 +224,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Money!"
 	},
 	firstDog: {
+		name: "First Dog"
 		type: "building",
 		detect: {
 			dogs: 1
@@ -227,6 +233,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Dog!"
 	},
 	firstStakebot: {
+		name: "First Stakebot"
 		type: "building",
 		detect: {
 			stakebots: 1
@@ -235,6 +242,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Stakebot!"
 	},
 	firstMinecrafter: {
+		name: "First Minecrafter"
 		type: "building",
 		detect: {
 			minecrafters: 1
@@ -243,6 +251,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Minecrafter!"
 	},
 	firstLabkit: {
+		name: "First Labkit"
 		type: "building",
 		detect: {
 			labkits: 1
@@ -251,6 +260,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Labkit!"
 	},
 	firstStand: {
+		name: "First Stand"
 		type: "building",
 		detect: {
 			stands: 1
@@ -746,6 +756,14 @@ function checkCheevos() {
 		};
 	};
 	document.getElementById("achievementsEarned").innerHTML = cheevos.achieved;
+};
+
+function loadCheevoTable() {
+	var table = document.getElementById("achievementTable");
+	for (var i in cheevos) {
+		if (cheevos.hasOwnProperty(i)) {
+		};
+	};
 };
 
 function save() {
