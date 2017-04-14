@@ -5,6 +5,9 @@
 	</head>
 	<body onload="save()">
 		<div id="datetime"></div>
+		<span id="claimedPrestige">0</span> Total Prestige Points<br/>
+		<span id="unclaimedPrestige">0</span> Prestige Points Waiting<br/>
+		<button onClick="claimPrestige()">Prestige</button><br/>
 		<div>
 			<h1>RESOURCES</h1>
 			<button onClick="scourLandscape(clickPower,'player')">Scour Landscape</button><br/>
@@ -47,11 +50,24 @@
 			<button onClick="buyUpgrades(1,'stands')" id="standUpgradeButton">Improve stand efficiency by 10% ($150)</button>
 		</div>
 		<div>
-		<h4>OPTIONS</h4>
+			<h1>ACHIEVEMENTS</h1>
+			<span id="achievementsEarned">0</span>/<span id="totalAchievements">24</span><br/>
+			<div></div>
+		</div>
+		<div>
+			<h4>OPTIONS</h4>
 			<button id="hardResetButton" onClick="hardReset()">Hard Reset</button>
 			<button id="saveButton" onClick="save()">Manual Save</button><br/>
 			The game autosaves every <span id="saveInterval">60</span> seconds.<br/>
 			Last save: <span id="lastSave">recently</span>
+		</div>
+		<div>
+			<h4>STATISTICS</h4>
+			Total land scoured: <span id="totalLandScoured">0</span><br/>
+			Total land staked: <span id="totalLandStaked">0</span><br/>
+			Total pitchblende mined: <span id="totalPitchblendeMined">0</span><br/>
+			Total ore processed: <span id="totalOreProcessed">0</span><br/>
+			Total money earned: <span id="totalEarnings">0</span>
 		</div>
 		<script type="text/javascript" src="main.js"></script>
 	</body>

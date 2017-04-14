@@ -17,6 +17,14 @@ var clickUpgradePrice = 10;
 var clickMult = 2.5;
 var mouseUpgradeButton = document.getElementById("mouseUpgradeButton");
 
+var totalPrestige = 0;
+var claimedPrestige = 0;
+var totalEarnings = 0;
+var totalLandScoured = 0;
+var totalLandStaked = 0;
+var totalPitchblendeMined = 0;
+var totalOreProcessed = 0;
+
 var buttonObject = {
 	dogButton: document.getElementById("dogButton"),
 	stakebotButton: document.getElementById("stakebotButton"),
@@ -103,11 +111,11 @@ var currentPsObject = { //actual resource output per second
 	stands: 0
 };
 var conversionEfficiencyObject = { //how efficiently each resource converts to the next one
-	scourFactor: 0.5,
-	landToStakedLand: 0.5,
-	stakedLandToPitchblende: 0.5,
-	pitchblendeToUraniumOre: 0.5,
-	uraniumOreToMoney: 0.5
+	scourFactor: 0.5 * (1 + claimedPrestige/100),
+	landToStakedLand: 0.5 * (1 + claimedPrestige/100),
+	stakedLandToPitchblende: 0.5 * (1 + claimedPrestige/100),
+	pitchblendeToUraniumOre: 0.5 * (1 + claimedPrestige/100),
+	uraniumOreToMoney: 0.5 * (1 + claimedPrestige/100)
 };
 var conversionAssociationObject = {
 	dogs: "scourFactor",
@@ -121,6 +129,8 @@ var conversionAssociationObject = {
 	pitchblendeToUraniumOre: "labkitEfficiency",
 	uraniumOreToMoney: "standEfficiency"
 };
+
+var upgradeStrength = 0.1
 
 var tierOneUpgradeObject = {
 	dogs: 0,
@@ -158,8 +168,6 @@ var upgradeSpanButtonIds = {
 	stands: document.getElementById("standUpgradeButton")
 };
 
-var prestige = 0;
-
 var maxBuyableButtonObject = {
 	dogButton: calcMaxBuyable(initPriceObject[buildingSpanIds.dogs],priceMultObject[buildingSpanIds.dogs],tierOneObject[buildingSpanIds.dogs],money),
 	stakebotButton: calcMaxBuyable(initPriceObject[buildingSpanIds.stakebots],priceMultObject[buildingSpanIds.stakebots],tierOneObject[buildingSpanIds.stakebots],money),
@@ -167,6 +175,92 @@ var maxBuyableButtonObject = {
 	labkitButton: calcMaxBuyable(initPriceObject[buildingSpanIds.labkits],priceMultObject[buildingSpanIds.labkits],tierOneObject[buildingSpanIds.labkits],money),
 	standButton: calcMaxBuyable(initPriceObject[buildingSpanIds.stands],priceMultObject[buildingSpanIds.stands],tierOneObject[buildingSpanIds.stands],money)
 };
+
+var cheevos = {
+	achieved: 0,
+	firstLand: {
+		type: "resource",
+		detect: {
+			land: 1
+		},
+		unlocked: false,
+		unlockMessage: "Achieved First Land!"
+	},
+	firstStakedLand: {
+		type: "resource",
+		detect: {
+			stakedLand: 1
+		},
+		unlocked: false,
+		unlockMessage: "Achieved First Staked Land!"
+	},
+	firstPitchblende: {
+		type: "resource",
+		detect: {
+			pitchblende: 1
+		},
+		unlocked: false,
+		unlockMessage: "Achieved First Pitchblende!"
+	},
+	firstUraniumOre: {
+		type: "resource",
+		detect: {
+			uraniumOre: 1
+		},
+		unlocked: false,
+		unlockMessage: "Achieved First Uranium Ore!"
+	},
+	firstMoney: {
+		type: "resource",
+		detect: {
+			money: 1
+		},
+		unlocked: false,
+		unlockMessage: "Achieved First Money!"
+	},
+	firstDog: {
+		type: "building",
+		detect: {
+			dogs: 1
+		},
+		unlocked: false,
+		unlockMessage: "Achieved First Dog!"
+	},
+	firstStakebot: {
+		type: "building",
+		detect: {
+			stakebots: 1
+		},
+		unlocked: false,
+		unlockMessage: "Achieved First Stakebot!"
+	},
+	firstMinecrafter: {
+		type: "building",
+		detect: {
+			minecrafters: 1
+		},
+		unlocked: false,
+		unlockMessage: "Achieved First Minecrafter!"
+	},
+	firstLabkit: {
+		type: "building",
+		detect: {
+			labkits: 1
+		},
+		unlocked: false,
+		unlockMessage: "Achieved First Labkit!"
+	},
+	firstStand: {
+		type: "building",
+		detect: {
+			stands: 1
+		},
+		unlocked: false,
+		unlockMessage: "Achieved First Stand!"
+	}
+};
+
+document.getElementById("totalAchievements").innerHTML = Object.keys(cheevos).length - 1;
 
 var gamesave = {
 	ticks: ticks,
@@ -185,7 +279,15 @@ var gamesave = {
 	clickPower: clickPower,
 	clickUpgradePrice: clickUpgradePrice,
 	clickMult: clickMult,
-	prestige: prestige
+	totalPrestige: totalPrestige,
+	claimedPrestige: claimedPrestige,
+	totalEarnings: totalEarnings,
+	totalLandScoured: totalLandScoured,
+	totalLandStaked: totalLandStaked,
+	totalPitchblendeMined: totalPitchblendeMined,
+	totalOreProcessed: totalOreProcessed,
+	upgradeStrength: upgradeStrength,
+	cheevos: cheevos
 };
 
 //developer/debug mode
@@ -213,94 +315,117 @@ function clocktick() {
 function scourLandscape(number,actor) {
 	if (actor == "player") { //if the player clicks the button add the number
 		resourceObject.land = resourceObject.land + number;
+		totalLandScoured = totalLandScoured + number;
 	} else { //if the function is called by something else, like a building, use the number as a multiplier for the resource per second
 		resourceObject.land = resourceObject.land + number * resourcePsObject[actor] * conversionEfficiencyObject.scourFactor;
+		totalLandScoured = totalLandScoured + number * resourcePsObject[actor] * conversionEfficiencyObject.scourFactor;
 	};
 	document.getElementById("land").innerHTML = round(resourceObject.land,3);
+	document.getElementById("totalLandScoured").innerHTML = round(totalLandScoured,3);
 };
 function stakeLand(number,actor) {
 	if (actor == "player") {
 		if (resourceObject.land >= number) { //if there is enough land to make the purchase
 			resourceObject.land = resourceObject.land - number; //take the land
 			resourceObject.stakedLand = resourceObject.stakedLand + number; //increase the staked land with a 1:1 ratio
+			totalLandStaked = totalLandStaked + number;
 		} else { //if there's not enough land then just take all the land it can
 			resourceObject.stakedLand = resourceObject.stakedLand + resourceObject.land;
+			totalLandStaked = totalLandStaked + resourceObject.land;
 			resourceObject.land = 0;
 		};
 	} else { //if the function is called by a building or something
 		if (resourceObject.land >= number * resourcePsObject[actor]) { //and the player can afford the amount the building wants to process per second
 			resourceObject.land = resourceObject.land - number * resourcePsObject[actor]; //take the land
 			resourceObject.stakedLand = resourceObject.stakedLand + number * resourcePsObject[actor] * conversionEfficiencyObject.landToStakedLand; //add the right amount (remember the number is a multiplier)
+			totalLandStaked = totalLandStaked + number * resourcePsObject[actor] * conversionEfficiencyObject.landToStakedLand;
 		} else {
 			resourceObject.stakedLand = resourceObject.stakedLand + resourceObject.land * conversionEfficiencyObject.landToStakedLand; //if the player can't afford it take all of it anyway
+			totalLandStaked = totalLandStaked + resourceObject.land * conversionEfficiencyObject.landToStakedLand;
 			resourceObject.land = 0;
 		};
 	};
 	document.getElementById("land").innerHTML = round(resourceObject.land,3);
 	document.getElementById("stakedLand").innerHTML = round(resourceObject.stakedLand,3);
+	document.getElementById("totalLandStaked").innerHTML = round(totalLandStaked,3);
 };
 function mineStakes(number,actor) {
 	if (actor == "player") {
 		if (resourceObject.stakedLand >= number) { //you know the drill
 			resourceObject.stakedLand = resourceObject.stakedLand - number;
 			resourceObject.pitchblende = resourceObject.pitchblende + number;
+			totalPitchblendeMined = totalPitchblendeMined + number;
 		} else {
 			resourceObject.pitchblende = resourceObject.pitchblende + resourceObject.stakedLand;
+			totalPitchblendeMined = totalPitchblendeMined + resourceObject.stakedLand;
 			resourceObject.stakedLand = 0;
 		};
 	} else {
 		if (resourceObject.stakedLand >= number * resourcePsObject[actor]) {
 			resourceObject.stakedLand = resourceObject.stakedLand - number * resourcePsObject[actor];
 			resourceObject.pitchblende = resourceObject.pitchblende + number * resourcePsObject[actor] * conversionEfficiencyObject.stakedLandToPitchblende;
+			totalPitchblendeMined = totalPitchblendeMined + number * resourcePsObject[actor] * conversionEfficiencyObject.stakedLandToPitchblende;
 		} else {
 			resourceObject.pitchblende = resourceObject.pitchblende + resourceObject.stakedLand * conversionEfficiencyObject.stakedLandToPitchblende;
+			totalPitchblendeMined = totalPitchblendeMined + resourceObject.stakedLand * conversionEfficiencyObject.stakedLandToPitchblende;
 			resourceObject.stakedLand = 0;
 		};
 	};
 	document.getElementById("stakedLand").innerHTML = round(resourceObject.stakedLand,3);
 	document.getElementById("pitchblende").innerHTML = round(resourceObject.pitchblende,3);
+	document.getElementById("totalPitchblendeMined").innerHTML = round(totalPitchblendeMined,3);
 };
 function refinePitch(number,actor) {
 	if (actor == "player") {
 		if (resourceObject.pitchblende >= number) {
 			resourceObject.pitchblende = resourceObject.pitchblende - number;
 			resourceObject.uraniumOre = resourceObject.uraniumOre + number;
+			totalOreProcessed = totalOreProcessed + number;
 		} else {
 			resourceObject.uraniumOre = resourceObject.uraniumOre + resourceObject.pitchblende;
+			totalOreProcessed = totalOreProcessed + resourceObject.pitchblende;
 			resourceObject.pitchblende = 0;
 		};
 	} else {
 		if (resourceObject.pitchblende >= number * resourcePsObject[actor]) {
 			resourceObject.pitchblende = resourceObject.pitchblende - number * resourcePsObject[actor];
 			resourceObject.uraniumOre = resourceObject.uraniumOre + number * resourcePsObject[actor] * conversionEfficiencyObject.pitchblendeToUraniumOre;
+			totalOreProcessed = totalOreProcessed + number * resourcePsObject[actor] * conversionEfficiencyObject.pitchblendeToUraniumOre;
 		} else {
 			resourceObject.uraniumOre = resourceObject.uraniumOre + resourceObject.pitchblende * conversionEfficiencyObject.pitchblendeToUraniumOre;
+			totalOreProcessed = totalOreProcessed + resourceObject.pitchblende * conversionEfficiencyObject.pitchblendeToUraniumOre;
 			resourceObject.pitchblende = 0;
 		};
 	};
 	document.getElementById("pitchblende").innerHTML = round(resourceObject.pitchblende,3);
 	document.getElementById("uraniumOre").innerHTML = round(resourceObject.uraniumOre,3);
+	document.getElementById("totalOreProcessed").innerHTML = round(totalOreProcessed,3);
 };
 function sellUranium(number,actor) {
 	if (actor == "player") {
 		if (resourceObject.uraniumOre >= number) {
 			resourceObject.uraniumOre = resourceObject.uraniumOre - number;
 			resourceObject.money = resourceObject.money + number;
+			totalEarnings = totalEarnings + number;
 		} else {
 			resourceObject.money = resourceObject.money + resourceObject.uraniumOre;
+			totalEarnings = totalEarnings + resourceObject.uraniumOre;
 			resourceObject.uraniumOre = 0;
 		};
 	} else {
 		if (resourceObject.uraniumOre >= number * resourcePsObject[actor]) {
 			resourceObject.uraniumOre = resourceObject.uraniumOre - number * resourcePsObject[actor];
 			resourceObject.money = resourceObject.money + number * resourcePsObject[actor] * conversionEfficiencyObject.uraniumOreToMoney;
+			totalEarnings = totalEarnings + number * resourcePsObject[actor] * conversionEfficiencyObject.uraniumOreToMoney;
 		} else {
 			resourceObject.money = resourceObject.money + resourceObject.uraniumOre * conversionEfficiencyObject.uraniumOreToMoney;
+			totalEarnings = totalEarnings + resourceObject.uraniumOre * conversionEfficiencyObject.uraniumOreToMoney;
 			resourceObject.uraniumOre = 0;
 		};
 	};
 	document.getElementById("uraniumOre").innerHTML = round(resourceObject.uraniumOre,3);
 	document.getElementById("money").innerHTML = round(resourceObject.money,3);
+	document.getElementById("totalEarnings").innerHTML = round(totalEarnings,3);
 };
 
 function costCalc(price,priceMult,building,number) {
@@ -325,7 +450,7 @@ function updatePriceOf(building) {
 };
 
 function updateUpgradePriceOf(upgrade) {
-		upgradeSpanButtonIds[upgrade].innerHTML = "Improve " + upgrade.toString().slice(0,-1) + " efficiency by 10% ($" + round(costCalc(initUpgradePriceObject[upgrade],upgradePriceMultObject[upgrade],tierOneUpgradeObject[upgrade],1),3) + ")";
+		upgradeSpanButtonIds[upgrade].innerHTML = "Improve " + upgrade.toString().slice(0,-1) + " efficiency by " + round((upgradeStrength * 100),3) + "% ($" + round(costCalc(initUpgradePriceObject[upgrade],upgradePriceMultObject[upgrade],tierOneUpgradeObject[upgrade],1),3) + ")";
 };
 
 //declare building buying function
@@ -416,7 +541,7 @@ function buyUpgrades(number, type) {
 		resourceObject.money = resourceObject.money - totalCost;
 		tierOneUpgradeObject[upgradeToBuy] = tierOneUpgradeObject[upgradeToBuy] + number;
 		upgradePriceObject[upgradeToBuy] = upgradePriceObject[upgradeToBuy]*Math.pow(priceMult,number);
-		conversionEfficiencyObject[conversionAssociationObject[upgradeToBuy]] = conversionEfficiencyObject[conversionAssociationObject[upgradeToBuy]] + (0.1 * number);
+		conversionEfficiencyObject[conversionAssociationObject[upgradeToBuy]] = conversionEfficiencyObject[conversionAssociationObject[upgradeToBuy]] + (upgradeStrength * number);
 	};
 	for (var i in tierOneUpgradeObject) {
 		if (tierOneUpgradeObject.hasOwnProperty(i)) {
@@ -481,6 +606,12 @@ function calculatePsValues() { //n buildings * base rps * confactor - n (next) b
 	document.getElementById("moneyps").innerHTML = round(currentPsObject.stands,3);
 };
 
+function calculatePrestige() {
+	totalPrestige = Math.pow(totalEarnings / 1000000,0.5);
+	document.getElementById("unclaimedPrestige").innerHTML = round(totalPrestige - claimedPrestige,3);
+	document.getElementById("claimedPrestige").innerHTML = round(claimedPrestige,3);
+};
+
 function updateEfficiencies() {
 	document.getElementById("dogEfficiency").innerHTML = round(100 * conversionEfficiencyObject.scourFactor,3);
 	document.getElementById("stakebotEfficiency").innerHTML = round(100 * conversionEfficiencyObject.landToStakedLand,3);
@@ -505,6 +636,11 @@ function updateUpgradeButtons() {
 			upgradeSpanButtonIds[i].disabled = false;
 		};
 	};
+	for (var i in buildingSpanIds) {
+		if (buildingSpanIds.hasOwnProperty(i)) {
+			updateUpgradePriceOf(i);
+		};
+	};
 	if (resourceObject.money < clickUpgradePrice) {
 		mouseUpgradeButton.disabled = true;
 	} else {
@@ -516,6 +652,22 @@ function hardReset() {
 	var result = confirm("Do you really want to hard reset your game?");
 	if (result == true) {
 		localStorage.clear();
+		location.reload();
+	};
+};
+
+function claimPrestige() {
+	var result = confirm("Are you sure you want to prestige?\nYou will disband your current setup and receive a building base efficiency bonus based on your prestige points.");
+	if (result == true) {
+		localStorage.clear();
+		claimedPrestige = totalPrestige;
+		for (var i in conversionEfficiencyObject) {
+			if (conversionEfficiencyObject.hasOwnProperty(i)) {
+				conversionEfficiencyObject[i] = 0.5 * (1 + claimedPrestige/100);
+			};
+		};
+		upgradeStrength = 0.1 * (1 + claimedPrestige);
+		save();
 		location.reload();
 	};
 };
@@ -538,6 +690,15 @@ if (localStorage.getItem("gamesave") !== null) {
 	if (typeof gamesave.clickPower !== undefined) clickPower = gamesave.clickPower;
 	if (typeof gamesave.clickUpgradePrice !== undefined) clickUpgradePrice = gamesave.clickUpgradePrice;
 	if (typeof gamesave.clickMult !== undefined) clickMult = gamesave.clickMult;
+	if (typeof gamesave.totalEarnings !== undefined) totalEarnings = gamesave.totalEarnings;
+	if (typeof gamesave.totalLandScoured !== undefined) totalLandScoured = gamesave.totalLandScoured;
+	if (typeof gamesave.totalLandStaked !== undefined) totalLandStaked = gamesave.totalLandStaked;
+	if (typeof gamesave.totalPitchblendeMined !== undefined) totalPitchblendeMined = gamesave.totalPitchblendeMined;
+	if (typeof gamesave.totalOreProcessed !== undefined) totalOreProcessed = gamesave.totalOreProcessed;
+	if (typeof gamesave.totalPrestige !== undefined) totalPrestige = gamesave.totalPrestige;
+	if (typeof gamesave.claimedPrestige !== undefined) claimedPrestige = gamesave.claimedPrestige;
+	if (typeof gamesave.upgradeStrength !== undefined) upgradeStrength = gamesave.upgradeStrength;
+	if (typeof gamesave.cheevos !== undefined) cheevos = gamesave.cheevos;
 	for (var i in tierOneObject) {
 		if (tierOneObject.hasOwnProperty(i)) {
 			document.getElementById(i).innerHTML = tierOneObject[i];
@@ -552,6 +713,39 @@ if (localStorage.getItem("gamesave") !== null) {
 	updateMaxBuyableButtonObject();
 	updateUpgradeButtons();
 	mouseUpgradeButton.innerHTML = "Double click power ($" + round(clickUpgradePrice,3).toString() + ")";
+};
+
+function checkCheevos() {
+	for (var i in cheevos) {
+		if (cheevos.hasOwnProperty(i)) {
+			switch (cheevos[i].type) {
+				case "resource":
+					for (var j in cheevos[i].detect) {
+						if (cheevos[i].detect.hasOwnProperty(j)) {
+							if (resourceObject[j] >= cheevos[i].detect[j] && cheevos[i].unlocked == false) {
+								cheevos[i].unlocked = true;
+								cheevos.achieved++;
+								alert(cheevos[i].unlockMessage);
+							};
+						};
+					};
+				break;
+				case "building":
+					for (var j in cheevos[i].detect) {
+						if (cheevos[i].detect.hasOwnProperty(j)) {
+							if (tierOneObject[j] >= cheevos[i].detect[j] && cheevos[i].unlocked == false) {
+								cheevos[i].unlocked = true;
+								cheevos.achieved++;
+								alert(cheevos[i].unlockMessage);
+							};
+						};
+					};
+				break;
+				default:
+			};
+		};
+	};
+	document.getElementById("achievementsEarned").innerHTML = cheevos.achieved;
 };
 
 function save() {
@@ -571,6 +765,15 @@ function save() {
 	gamesave.clickPower = clickPower;
 	gamesave.clickUpgradePrice = clickUpgradePrice;
 	gamesave.clickMult = clickMult;
+	gamesave.totalEarnings = totalEarnings;
+	gamesave.totalLandScoured = totalLandScoured;
+	gamesave.totalLandStaked = totalLandStaked;
+	gamesave.totalPitchblendeMined = totalPitchblendeMined;
+	gamesave.totalOreProcessed = totalOreProcessed;
+	gamesave.totalPrestige = totalPrestige;
+	gamesave.claimedPrestige = claimedPrestige;
+	gamesave.upgradeStrength = upgradeStrength;
+	gamesave.cheevos = cheevos;
 	localStorage.setItem("gamesave",JSON.stringify(gamesave));
 	document.getElementById("lastSave").innerHTML = datetime;
 };
@@ -594,9 +797,12 @@ window.setInterval(function() { //update window 20 times per second
 	calculatePsValues();
 	updateEfficiencies();
 	updateUpgradeButtons();
+	calculatePrestige();
+	checkCheevos();
 	for (var i in tierOneObject) {
 		if (tierOneObject.hasOwnProperty(i)) {
 			updatePriceOf(i);
+			document.getElementById(i).innerHTML = tierOneObject[i];
 		};
 	};
 	for (var j in buildingButtons) {
