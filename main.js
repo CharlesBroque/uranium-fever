@@ -658,7 +658,7 @@ function updateUpgradeButtons() {
 		mouseUpgradeButton.className = "disabled";
 	} else {
 		mouseUpgradeButton.disabled = false;
-		mouseUpgradeButton.className = "generic-button";
+		mouseUpgradeButton.className = "button-generic";
 	};
 };
 
