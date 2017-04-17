@@ -179,7 +179,7 @@ var maxBuyableButtonObject = {
 var cheevos = {
 	achieved: 0,
 	firstLand: {
-		name: "First Land"
+		name: "First Land",
 		type: "resource",
 		detect: {
 			land: 1
@@ -188,7 +188,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Land!"
 	},
 	firstStakedLand: {
-		name: "First Staked Land"
+		name: "First Staked Land",
 		type: "resource",
 		detect: {
 			stakedLand: 1
@@ -197,7 +197,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Staked Land!"
 	},
 	firstPitchblende: {
-		name: "First Pitchblende"
+		name: "First Pitchblende",
 		type: "resource",
 		detect: {
 			pitchblende: 1
@@ -206,7 +206,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Pitchblende!"
 	},
 	firstUraniumOre: {
-		name: "First Uranium Ore"
+		name: "First Uranium Ore",
 		type: "resource",
 		detect: {
 			uraniumOre: 1
@@ -215,7 +215,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Uranium Ore!"
 	},
 	firstMoney: {
-		name: "First Money"
+		name: "First Money",
 		type: "resource",
 		detect: {
 			money: 1
@@ -224,7 +224,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Money!"
 	},
 	firstDog: {
-		name: "First Dog"
+		name: "First Dog",
 		type: "building",
 		detect: {
 			dogs: 1
@@ -233,7 +233,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Dog!"
 	},
 	firstStakebot: {
-		name: "First Stakebot"
+		name: "First Stakebot",
 		type: "building",
 		detect: {
 			stakebots: 1
@@ -242,7 +242,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Stakebot!"
 	},
 	firstMinecrafter: {
-		name: "First Minecrafter"
+		name: "First Minecrafter",
 		type: "building",
 		detect: {
 			minecrafters: 1
@@ -251,7 +251,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Minecrafter!"
 	},
 	firstLabkit: {
-		name: "First Labkit"
+		name: "First Labkit",
 		type: "building",
 		detect: {
 			labkits: 1
@@ -260,7 +260,7 @@ var cheevos = {
 		unlockMessage: "Achieved First Labkit!"
 	},
 	firstStand: {
-		name: "First Stand"
+		name: "First Stand",
 		type: "building",
 		detect: {
 			stands: 1
@@ -725,6 +725,18 @@ if (localStorage.getItem("gamesave") !== null) {
 	mouseUpgradeButton.innerHTML = "Double click power ($" + round(clickUpgradePrice,3).toString() + ")";
 };
 
+function loadCheevoTable() {
+	var table = document.getElementById("achievementTable");
+	for (var i in cheevos) {
+		if (cheevos.hasOwnProperty(i) && i !== "achieved") {
+			var row = table.insertRow(-1);
+			var cell0 = row.insertCell(0);
+			cell0.innerHTML = cheevos[i].name;
+			cell0.className = "cheevo";
+		};
+	};
+};
+
 function checkCheevos() {
 	for (var i in cheevos) {
 		if (cheevos.hasOwnProperty(i)) {
@@ -753,17 +765,22 @@ function checkCheevos() {
 				break;
 				default:
 			};
+			var table = document.getElementById("achievementTable");
+			if (cheevos[i].unlocked == true) {
+				k = 0;
+				while (k <= table.rows.length - 1) {
+					if (table.rows[k].cells[0].innerHTML == cheevos[i].name) {
+						table.rows[k].cells[0].style.backgroundColor = "green";
+						table.rows[k].cells[0].style.color = "white";
+						k++;
+					} else {
+						k++;
+					};
+				};
+			};
 		};
 	};
 	document.getElementById("achievementsEarned").innerHTML = cheevos.achieved;
-};
-
-function loadCheevoTable() {
-	var table = document.getElementById("achievementTable");
-	for (var i in cheevos) {
-		if (cheevos.hasOwnProperty(i)) {
-		};
-	};
 };
 
 function save() {
@@ -817,6 +834,7 @@ window.setInterval(function() { //update window 20 times per second
 	updateUpgradeButtons();
 	calculatePrestige();
 	checkCheevos();
+	document.getElementById("clickPower").innerHTML = clickPower;
 	for (var i in tierOneObject) {
 		if (tierOneObject.hasOwnProperty(i)) {
 			updatePriceOf(i);

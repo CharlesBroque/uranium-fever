@@ -1,1 +1,128 @@
-
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+td.cheevo {
+	border: 1px solid black;
+	border-collapse: collapse;
+	padding: 5px;
+	width: 50%;
+	text-align: center;
+}
+td.resource-button {
+	width: 33%;
+	border: 1px solid black;
+	padding: 5px;
+	text-align: center;
+}
+td.resource {
+	width: 67%;
+	border: 1px solid black;
+	padding: 5px;
+	text-align: left;
+}
+table.resource, table.building, table.upgrade {
+	width: 100%;
+	padding: 5px;
+}
+td.building-button {
+	width: 33%;
+	border: 1px solid black;
+	padding: 5px;
+	text-align: center;
+}
+td.building {
+	width: 33.67%;
+	border: 1px solid black;
+	padding: 5px;
+	text-align: left;
+}
+td.upgrade {
+	width: 16.667%;
+	border: 1px solid black;
+	padding: 5px;
+	text-align: center;
+}
+#datetimediv {
+	width: 25%;
+	height: 5%;
+	right: 0px;
+	border: 3px solid black;
+	padding: 10px;
+	text-align: center;
+	margin: 3px;
+	top: 0px;
+	height: 75px;
+	position: absolute;
+}
+#prestigediv {
+	position: absolute;
+	width: 25%;
+	height: 10%;
+	right: 0px;
+	top: 80px;
+	border: 3px solid black;
+	padding: 10px;
+	margin: 3px;
+	text-align: center;
+}
+#primary-container {
+	position: absolute;
+	width: 50%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+	padding: 10px;
+}
+#resourcediv {
+	border: 3px solid black;
+	text-align: center;
+	padding: 5px;
+	margin: 3px;
+	height: 40%;
+}
+#buildingdiv {
+	border: 3px solid black;
+	text-align: center;
+	padding: 5px;
+	margin: 3px;
+	height: 40%;
+}
+#upgradediv {
+	border: 3px solid black;
+	text-align: center;
+	padding: 5px;
+	margin: 3px;
+	height: 20%;
+}
+#secondary-container {
+	position: absolute;
+	width: 25%;
+	height: 80%;
+	top: 190px;
+	right: 0px;
+	border: 3px solid black;
+	padding: 10px;
+	text-align: center;
+	margin: 3px;
+}
+#achievementTablediv {
+	position: relative;
+	left: 0px;
+	width: 50%;
+	margin: 0 auto;
+	padding: 0px;
+	overflow: auto;
+	height: 325px;
+}
+#optiondiv {
+	position: relative;
+	border-top: 1px solid gray;
+	padding: 5px;
+}
+#statdiv {
+	position: relative;
+	border-top: 1px solid gray;
+	padding: 10px;
+}
