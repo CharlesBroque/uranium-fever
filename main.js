@@ -130,7 +130,7 @@ var conversionAssociationObject = {
 	uraniumOreToMoney: "standEfficiency"
 };
 
-var upgradeStrength = 0.1
+var upgradeStrength = 0.1;
 
 var tierOneUpgradeObject = {
 	dogs: 0,
@@ -178,95 +178,95 @@ var maxBuyableButtonObject = {
 
 var cheevos = {
 	achieved: 0,
-	firstLand: {
-		name: "First Land",
+	wholeKilometer: {
+		name: "A Whole Kilometer",
 		type: "resource",
 		detect: {
-			land: 1
+			land: 1000
 		},
 		unlocked: false,
-		unlockMessage: "Achieved First Land!"
+		unlockMessage: "You've managed to rack up an entire square kilometer of virgin ground at once.\n(Achievement Unlocked)"
 	},
-	firstStakedLand: {
-		name: "First Staked Land",
+	governmentLand: {
+		name: "Government Land",
 		type: "resource",
 		detect: {
-			stakedLand: 1
+			stakedLand: 1000
 		},
 		unlocked: false,
-		unlockMessage: "Achieved First Staked Land!"
+		unlockMessage: "The stakes are high. Real high.\n(Achievement Unlocked)"
 	},
-	firstPitchblende: {
-		name: "First Pitchblende",
+	twoPointTwoPounds: {
+		name: "Two Point Two Pounds",
 		type: "resource",
 		detect: {
-			pitchblende: 1
+			pitchblende: 1000
 		},
 		unlocked: false,
-		unlockMessage: "Achieved First Pitchblende!"
+		unlockMessage: "A proper lump.\n(Achievement Unlocked)"
 	},
-	firstUraniumOre: {
-		name: "First Uranium Ore",
+	radioactive: {
+		name: "Radioactive, Radioactive!",
 		type: "resource",
 		detect: {
-			uraniumOre: 1
+			uraniumOre: 1000
 		},
 		unlocked: false,
-		unlockMessage: "Achieved First Uranium Ore!"
+		unlockMessage: "I'm waking up, I feel it in my bones. Enough to threaten the structural integrity of my skeletal system.\n(Achievement Unlocked)"
 	},
-	firstMoney: {
-		name: "First Money",
+	lodsOfEmone: {
+		name: "Loadsamoney",
 		type: "resource",
 		detect: {
-			money: 1
+			money: 1000
 		},
 		unlocked: false,
-		unlockMessage: "Achieved First Money!"
+		unlockMessage: "I make more than that in a day, probably.\n(Achievement Unlocked)"
 	},
-	firstDog: {
-		name: "First Dog",
+	dogAchievement: {
+		name: "Dog Achievement",
 		type: "building",
 		detect: {
-			dogs: 1
+			dogs: 10
 		},
 		unlocked: false,
-		unlockMessage: "Achieved First Dog!"
+		unlockMessage: "Ten dogs. Hey, not every achievement has to be clever.\n(Achievement Unlocked)"
 	},
-	firstStakebot: {
-		name: "First Stakebot",
+	stakebotStakeout: {
+		name: "Stakeout",
 		type: "building",
 		detect: {
-			stakebots: 1
+			stakebots: 10
 		},
 		unlocked: false,
-		unlockMessage: "Achieved First Stakebot!"
+		unlockMessage: "It's a stakebot stakeout! ... No? Nothing?\n(Achievement Unlocked)"
 	},
-	firstMinecrafter: {
-		name: "First Minecrafter",
+	miningAway: {
+		name: "MINING AWAY",
 		type: "building",
 		detect: {
-			minecrafters: 1
+			minecrafters: 10
 		},
 		unlocked: false,
-		unlockMessage: "Achieved First Minecrafter!"
+		unlockMessage: "IN THIS MINECRAFT DAY, SO BEAUTIFUL\n(Achievement Unlocked)"
 	},
-	firstLabkit: {
-		name: "First Labkit",
+	cookingWithGas: {
+		name: "Cooking With Gas",
 		type: "building",
 		detect: {
-			labkits: 1
+			labkits: 10
 		},
 		unlocked: false,
-		unlockMessage: "Achieved First Labkit!"
+		unlockMessage: "Vastly inferior to electric technology.\n(Achievement Unlocked)"
 	},
-	firstStand: {
-		name: "First Stand",
+	sutandoPowah: {
+		name: "Sutando Powah",
 		type: "building",
 		detect: {
-			stands: 1
+			stands: 10
 		},
 		unlocked: false,
-		unlockMessage: "Achieved First Stand!"
+		unlockMessage: "ORAORAORAORAORAORAORAORAORAORA--ORA!!\n(Achievement 「RETIRED」)"
 	}
 };
 
