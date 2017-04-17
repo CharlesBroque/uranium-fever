@@ -642,8 +642,10 @@ function updateUpgradeButtons() {
 	for (var i in upgradeSpanButtonIds) {
 		if (resourceObject.money < upgradePriceObject[i]) {
 			upgradeSpanButtonIds[i].disabled = true;
+			upgradeSpanButtonIds[i].className = "disabled";
 		} else {
 			upgradeSpanButtonIds[i].disabled = false;
+			upgradeSpanButtonIds[i].className = "button-generic";
 		};
 	};
 	for (var i in buildingSpanIds) {
@@ -653,8 +655,10 @@ function updateUpgradeButtons() {
 	};
 	if (resourceObject.money < clickUpgradePrice) {
 		mouseUpgradeButton.disabled = true;
+		mouseUpgradeButton.className = "disabled";
 	} else {
 		mouseUpgradeButton.disabled = false;
+		mouseUpgradeButton.className = "generic-button";
 	};
 };
 
@@ -862,8 +866,10 @@ window.setInterval(function() { //update window 20 times per second
 			};
 			if (document.getElementById(buildingSpanPriceIds[j.slice(0,-6).toString() + 's']).innerHTML > resourceObject.money) {
 				buttonObject[j.toString()].disabled = true;
+				buttonObject[j.toString()].className = "disabled";
 			} else {
 				buttonObject[j.toString()].disabled = false;
+				buttonObject[j.toString()].className = "button-generic";
 			};
 		};
 	};

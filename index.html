@@ -2,38 +2,42 @@
 	<head>
 		<meta charset="utf-8"/>
 		<link rel="stylesheet" type="text/css" href="interface.css"/>
+		<link href='//fonts.googleapis.com/css?family=Yellowtail' rel='stylesheet'>
 	</head>
 	<body onload="save(); loadCheevoTable();">
-		<div id="datetimediv">
-			<span id="datetime"></span>
-		</div>
-		<div id="prestigediv">
-			<span id="claimedPrestige">0</span> Total Prestige Points<br/>
-			<span id="unclaimedPrestige">0</span> Prestige Points Waiting<br/>
-			<button onClick="claimPrestige()">Prestige</button><br/>
-		</div>
-		<div id="secondary-container">
-			<div id="achievementdiv">
-				<h4>ACHIEVEMENTS</h4>
-				<span id="achievementsEarned">0</span>/<span id="totalAchievements">24</span> unlocked<br/>
-				<div id="achievementTablediv">
-					<table id="achievementTable"></table>
+		<div id="secondary-container-container">
+			<div id="datetimediv">
+				<span id="datetime"></span>
+			</div>
+			<div id="prestigediv">
+				<br/>
+				<span id="claimedPrestige">0</span> Total Prestige Points<br/>
+				<span id="unclaimedPrestige">0</span> Prestige Points Waiting<br/>
+				<button class="button-important" onClick="claimPrestige()">Prestige</button><br/>
+			</div>
+			<div id="secondary-container">
+				<div id="achievementdiv">
+					<h4>ACHIEVEMENTS</h4>
+					<span id="achievementsEarned">0</span>/<span id="totalAchievements">24</span> unlocked<br/>
+					<div id="achievementTablediv">
+						<table id="achievementTable"></table>
+					</div>
 				</div>
-			</div>
-			<div id="optiondiv">
-				<h4>OPTIONS</h4>
-				<button id="hardResetButton" onClick="hardReset()">Hard Reset</button>
-				<button id="saveButton" onClick="save()">Manual Save</button><br/>
-				The game autosaves every <span id="saveInterval">60</span> seconds.<br/>
-				Last save: <span id="lastSave">recently</span>
-			</div>
-			<div id="statdiv">
-				<h4>STATISTICS</h4>
-				Total land scoured: <span id="totalLandScoured">0</span><br/>
-				Total land staked: <span id="totalLandStaked">0</span><br/>
-				Total pitchblende mined: <span id="totalPitchblendeMined">0</span><br/>
-				Total ore processed: <span id="totalOreProcessed">0</span><br/>
-				Total money earned: <span id="totalEarnings">0</span>
+				<div id="optiondiv">
+					<h4>OPTIONS</h4>
+					<button id="hardResetButton" class="button-superimportant" onClick="hardReset()">Hard Reset</button>
+					<button id="saveButton" class="button-save" onClick="save()">Manual Save</button><br/>
+					The game autosaves every <span id="saveInterval">60</span> seconds.<br/>
+					Last save: <span id="lastSave">recently</span>
+				</div>
+				<div id="statdiv">
+					<h4>STATISTICS</h4>
+					Total land scoured: <span id="totalLandScoured">0</span><br/>
+					Total land staked: <span id="totalLandStaked">0</span><br/>
+					Total pitchblende mined: <span id="totalPitchblendeMined">0</span><br/>
+					Total ore processed: <span id="totalOreProcessed">0</span><br/>
+					Total money earned: <span id="totalEarnings">0</span>
+				</div>
 			</div>
 		</div>
 		<div id="primary-container">
@@ -45,53 +49,55 @@
 						<td class="resource"><span id="clickPower">1</span></td>
 					</tr>
 					<tr>
-						<td class="resource-button"><button onClick="scourLandscape(clickPower,'player')">Scour Landscape</button></td>
+						<td class="resource-button"><button class="button-generic" onClick="scourLandscape(clickPower,'player')">Scour Landscape</button></td>
 						<td class="resource"><span id="land">0</span> square meters of land scouted (<span id="landps">0</span>/s)</td>
 					</tr>
 					<tr>
-						<td class="resource-button"><button onClick="stakeLand(clickPower,'player')">Stake Land</button></td>
+						<td class="resource-button"><button class="button-generic" onClick="stakeLand(clickPower,'player')">Stake Land</button></td>
 						<td class="resource"><span id="stakedLand">0</span> square meters of land staked (<span id="stakedLandps">0</span>/s)</td>
 					</tr>
 					<tr>
-						<td class="resource-button"><button onClick="mineStakes(clickPower,'player')">Mine for Pitchblende</button></td>
+						<td class="resource-button"><button class="button-generic" onClick="mineStakes(clickPower,'player')">Mine for Pitchblende</button></td>
 						<td class="resource"><span id="pitchblende">0</span> grams of raw pitchblende (<span id="pitchblendeps">0</span>/s)</td>
 					</tr>
 					<tr>
-						<td class="resource-button"><button onClick="refinePitch(clickPower,'player')">Process Pitchblende</button></td>
+						<td class="resource-button"><button class="button-generic" onClick="refinePitch(clickPower,'player')">Process Pitchblende</button></td>
 						<td class="resource"><span id="uraniumOre">0</span> grams of processed ore (<span id="uraniumOreps">0</span>/s)</td>
 					</tr>
 					<tr>
-						<td class="resource-button"><button onClick="sellUranium(clickPower,'player')">Sell Uranium</button></td>
+						<td class="resource-button"><button class="button-generic" onClick="sellUranium(clickPower,'player')">Sell Uranium</button></td>
 						<td class="resource">$<span id="money">0</span> (<span id="moneyps">0</span>/s)</td>
 					</tr>
 				</table>
 			</div>
 			<div id="buildingdiv">
 				<h1>BUILDINGS</h1>
-				Bulk Purchase Size: <button onClick="switchBuyMode()" id="buyMode">Buy x1</button><br/>
+				<div id="buymodebutton">
+					Bulk Purchase Size: <button class="button-buymode" onClick="switchBuyMode()" id="buyMode">Buy x1</button><br/>
+				</div>
 				<table class="building">
 					<tr>
-						<td class="building-button"><button onClick="buyBuildings(buyMode,'dogs')" id="dogButton">Buy 1 dog</button></td>
+						<td class="building-button"><button class="button-generic" onClick="buyBuildings(buyMode,'dogs')" id="dogButton">Buy 1 dog</button></td>
 						<td class="building">Price: $<span id="dogPrice">10</span></td>
 						<td class="building"><span id="dogs">0</span> scouring at <span id="dogEfficiency">50</span>% efficiency</td>
 					</tr>
 					<tr>
-						<td class="building-button"><button onClick="buyBuildings(buyMode,'stakebots')" id="stakebotButton">Buy 1 stakeBot</button></td>
+						<td class="building-button"><button class="button-generic" onClick="buyBuildings(buyMode,'stakebots')" id="stakebotButton">Buy 1 stakeBot</button></td>
 						<td class="building">Price: $<span id="stakebotPrice">15</span></td>
 						<td class="building"><span id="stakebots">0</span> staking at <span id="stakebotEfficiency">50</span>% efficiency</td>
 					</tr>
 					<tr>
-						<td class="building-button"><button onClick="buyBuildings(buyMode,'minecrafters')" id="minecrafterButton">Buy 1 minecrafter</button></td>
+						<td class="building-button"><button class="button-generic" onClick="buyBuildings(buyMode,'minecrafters')" id="minecrafterButton">Buy 1 minecrafter</button></td>
 						<td class="building">Price: $<span id="minecrafterPrice">25</span></td>
 						<td class="building"><span id="minecrafters">0</span> mining at <span id="minecrafterEfficiency">50</span>% efficiency</td>
 					</tr>
 					<tr>
-						<td class="building-button"><button onClick="buyBuildings(buyMode,'labkits')" id="labkitButton">Buy 1 labkit</button></td>
+						<td class="building-button"><button class="button-generic" onClick="buyBuildings(buyMode,'labkits')" id="labkitButton">Buy 1 labkit</button></td>
 						<td class="building">Price: $<span id="labkitPrice">50</span></td>
 						<td class="building"><span id="labkits">0</span> refining at <span id="labkitEfficiency">50</span>% efficiency</td>
 					</tr>
 					<tr>
-						<td class="building-button"><button onClick="buyBuildings(buyMode,'stands')" id="standButton">Buy 1 stand</button></td>
+						<td class="building-button"><button class="button-generic" onClick="buyBuildings(buyMode,'stands')" id="standButton">Buy 1 stand</button></td>
 						<td class="building">Price: $<span id="standPrice">100</span></td>
 						<td class="building"><span id="stands">0</span> vending at <span id="standEfficiency">50</span>% efficiency</td>
 					</tr>
@@ -101,14 +107,14 @@
 				<h1>UPGRADES</h1>
 				<table class="upgrade">
 					<tr>
-						<td class="upgrade"><button onclick="upgradeMouse()" id="mouseUpgradeButton">Double click power ($10)</button></td>
-						<td class="upgrade"><button onClick="buyUpgrades(1,'dogs')" id="dogUpgradeButton">Improve dog efficiency by 10% ($20)</button></td>
-						<td class="upgrade"><button onClick="buyUpgrades(1,'stakebots')" id="stakebotUpgradeButton">Improve stakebot efficiency by 10% ($30)</button></td>
+						<td class="upgrade"><button class="button-generic" onclick="upgradeMouse()" id="mouseUpgradeButton">Double click power ($10)</button></td>
+						<td class="upgrade"><button class="button-generic" onClick="buyUpgrades(1,'dogs')" id="dogUpgradeButton">Improve dog efficiency by 10% ($20)</button></td>
+						<td class="upgrade"><button class="button-generic" onClick="buyUpgrades(1,'stakebots')" id="stakebotUpgradeButton">Improve stakebot efficiency by 10% ($30)</button></td>
 					</tr>
 					<tr>
-						<td class="upgrade"><button onClick="buyUpgrades(1,'minecrafters')" id="minecrafterUpgradeButton">Improve minecrafter efficiency by 10% ($50)</button></td>
-						<td class="upgrade"><button onClick="buyUpgrades(1,'labkits')" id="labkitUpgradeButton">Improve labkit efficiency by 10% ($90)</button></td>
-						<td class="upgrade"><button onClick="buyUpgrades(1,'stands')" id="standUpgradeButton">Improve stand efficiency by 10% ($150)</button></td>
+						<td class="upgrade"><button class="button-generic" onClick="buyUpgrades(1,'minecrafters')" id="minecrafterUpgradeButton">Improve minecrafter efficiency by 10% ($50)</button></td>
+						<td class="upgrade"><button class="button-generic" onClick="buyUpgrades(1,'labkits')" id="labkitUpgradeButton">Improve labkit efficiency by 10% ($90)</button></td>
+						<td class="upgrade"><button class="button-generic" onClick="buyUpgrades(1,'stands')" id="standUpgradeButton">Improve stand efficiency by 10% ($150)</button></td>
 					</tr>
 				</table>
 			</div>
