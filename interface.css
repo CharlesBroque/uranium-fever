@@ -4,6 +4,10 @@
           box-sizing: border-box;
 	font-family: "Courier New",Courier,monospace;
 }
+body {
+	background-image: url(img/nevada.jpg);
+	background-size: 100%;
+}
 h4 {
 	font-family: "Courier New",Courier,monospace;
 	font-size: 16px;
@@ -112,6 +116,7 @@ td.upgrade {
 	height: 5%;
 	position: relative;
 	font-family: "Courier New",Courier,monospace;
+	background-color: #FFFFFF99;
 }
 #prestigediv {
 	position: relative;
@@ -122,6 +127,7 @@ td.upgrade {
 	padding: 0px;
 	text-align: center;
 	font-family: "Courier New",Courier,monospace;
+	background-color: #FFFFFF99;
 }
 #primary-container {
 	position: absolute;
@@ -137,6 +143,7 @@ td.upgrade {
 	padding: 5px;
 	margin: 3px;
 	height: 40%;
+	background-color: #FFFFFF99;
 }
 #buildingdiv {
 	border: 3px solid black;
@@ -144,6 +151,7 @@ td.upgrade {
 	padding: 5px;
 	margin: 3px;
 	height: 40%;
+	background-color: #FFFFFF99;
 }
 #upgradediv {
 	border: 3px solid black;
@@ -151,6 +159,7 @@ td.upgrade {
 	padding: 5px;
 	margin: 3px;
 	height: 20%;
+	background-color: #FFFFFF99;
 }
 #secondary-container-container {
 	position: absolute;
@@ -167,6 +176,7 @@ td.upgrade {
 	border: 3px solid black;
 	padding: 10px;
 	text-align: center;
+	background-color: #FFFFFF99;
 }
 #achievementTablediv {
 	position: relative;
