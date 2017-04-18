@@ -178,14 +178,14 @@ var maxBuyableButtonObject = {
 
 var cheevos = {
 	achieved: 0,
-	wholeKilometer: {
-		name: "A Whole Kilometer",
+	longStrip: {
+		name: "The Long Strip",
 		type: "resource",
 		detect: {
 			land: 1000
 		},
 		unlocked: false,
-		unlockMessage: "You've managed to rack up an entire square kilometer of virgin ground at once.\n(Achievement Unlocked)"
+		unlockMessage: "You've managed to rack up 1000 square meters of virgin ground at once.\n(Achievement Unlocked)"
 	},
 	governmentLand: {
 		name: "Government Land",
@@ -214,14 +214,14 @@ var cheevos = {
 		unlocked: false,
 		unlockMessage: "I'm waking up, I feel it in my bones. Enough to threaten the structural integrity of my skeletal system.\n(Achievement Unlocked)"
 	},
-	lodsOfEmone: {
-		name: "Loadsamoney",
+	bigOne: {
+		name: "Big One",
 		type: "resource",
 		detect: {
 			money: 1000
 		},
 		unlocked: false,
-		unlockMessage: "I make more than that in a day, probably.\n(Achievement Unlocked)"
+		unlockMessage: "Grand.\n(Achievement Unlocked)"
 	},
 	dogAchievement: {
 		name: "Dog Achievement",
@@ -230,7 +230,7 @@ var cheevos = {
 			dogs: 10
 		},
 		unlocked: false,
-		unlockMessage: "Ten dogs. Hey, not every achievement has to be clever.\n(Achievement Unlocked)"
+		unlockMessage: "Ten dogs. Hey, not every achievement has to have witty unlock text.\n(Achievement Unlocked)"
 	},
 	stakebotStakeout: {
 		name: "Stakeout",
@@ -264,6 +264,276 @@ var cheevos = {
 		type: "building",
 		detect: {
 			stands: 10
+		},
+		unlocked: false,
+		unlockMessage: "ORAORAORAORAORAORAORAORAORAORA--ORA!!\n(Achievement 「RETIRED」)"
+	},
+	squareKilometer: {
+		name: "Square Kilometer",
+		type: "resource",
+		detect: {
+			land: 1000000
+		},
+		unlocked: false,
+		unlockMessage: "You did it. One square kilometer under your watchful eyes.\n(Achievement Unlocked)"
+	},
+	threestarStakehouse: {
+		name: "Three-Star Stakehouse",
+		type: "resource",
+		detect: {
+			stakedLand: 1000000
+		},
+		unlocked: false,
+		unlockMessage: "Dinner's on me, boys.\n(Achievement Unlocked)"
+	},
+	tonOfRocks: {
+		name: "A Ton Of Rocks",
+		type: "resource",
+		detect: {
+			pitchblende: 1000000
+		},
+		unlocked: false,
+		unlockMessage: "You're gonna need a bigger Jeep.\n(Achievement Unlocked)"
+	},
+	geigerShrugged: {
+		name: "Geiger Shrugged",
+		type: "resource",
+		detect: {
+			uraniumOre: 1000000
+		},
+		unlocked: false,
+		unlockMessage: "Society was on the verge of collapse anyway.\n(Achievement Unlocked)"
+	},
+	ransomDemand: {
+		name: "Ransom Demand?",
+		type: "resource",
+		detect: {
+			money: 1000000
+		},
+		unlocked: false,
+		unlockMessage: "I make more than that in a day, probably.\n(Achievement Unlocked)"
+	},
+	dogAchievement2: {
+		name: "Electric Boogaloo",
+		type: "building",
+		detect: {
+			dogs: 25
+		},
+		unlocked: false,
+		unlockMessage: "Quarter-centennial doggos. Fresh puppers, them.\n(Achievement Unlocked)"
+	},
+	stakeNshake: {
+		name: "Stake 'n Shake",
+		type: "building",
+		detect: {
+			stakebots: 25
+		},
+		unlocked: false,
+		unlockMessage: "Premium stakeburger.\n(Achievement Unlocked)"
+	},
+	dwarfOlympics: {
+		name: "Dwarf Olympics",
+		type: "building",
+		detect: {
+			minecrafters: 25
+		},
+		unlocked: false,
+		unlockMessage: "Diggy, diggy hole ... digging a hole.\n(Achievement Unlocked)"
+	},
+	bonusDrugs: {
+		name: "Bonus Drugs",
+		type: "building",
+		detect: {
+			labkits: 25
+		},
+		unlocked: false,
+		unlockMessage: "FDA Approved*.\n(Achievement Unlocked)\n\n\n\n\n*not really."
+	},
+	standProud: {
+		name: "Stand Proud",
+		type: "building",
+		detect: {
+			stands: 25
+		},
+		unlocked: false,
+		unlockMessage: "Break you down Break you down Break you down\nKobushi hanatsu seinaru VISION Stand Proud!\n(Achievement 「RETIRED」)"
+	},
+	frequentFlyer: {
+		name: "Frequent Flyer",
+		type: "resource",
+		detect: {
+			land: 1000000000
+		},
+		unlocked: false,
+		unlockMessage: "That's one billion square meters, son. One billion. With a B.\n(Achievement Unlocked)"
+	},
+	noMisStakes: {
+		name: "No Mis-stakes",
+		type: "resource",
+		detect: {
+			stakedLand: 1000000000
+		},
+		unlocked: false,
+		unlockMessage: "The pinnacle of stake-laying.\n(Achievement Unlocked)"
+	},
+	kiloton: {
+		name: "Kiloton",
+		type: "resource",
+		detect: {
+			pitchblende: 1000000000
+		},
+		unlocked: false,
+		unlockMessage: "You're on the watchlist now, bucko.\n(Achievement Unlocked)"
+	},
+	illegal: {
+		name: "This Is Illegal",
+		type: "resource",
+		detect: {
+			uraniumOre: 1000000000
+		},
+		unlocked: false,
+		unlockMessage: "... I think. I'm not positive.\n(Achievement Unlocked)"
+	},
+	billionaire: {
+		name: "Billionaire",
+		type: "resource",
+		detect: {
+			money: 1000000000
+		},
+		unlocked: false,
+		unlockMessage: "'Hey Jimmy, what would you do with a billion dollars?'\n'Buy a dog. What else?'\n(Achievement Unlocked)"
+	},
+	dogAchievement: {
+		name: "Dog Achievement",
+		type: "building",
+		detect: {
+			dogs: 50
+		},
+		unlocked: false,
+		unlockMessage: "Ten dogs. Hey, not every achievement has to have witty unlock text.\n(Achievement Unlocked)"
+	},
+	stakebotStakeout: {
+		name: "Stakeout",
+		type: "building",
+		detect: {
+			stakebots: 50
+		},
+		unlocked: false,
+		unlockMessage: "It's a stakebot stakeout! ... No? Nothing?\n(Achievement Unlocked)"
+	},
+	miningAway: {
+		name: "MINING AWAY",
+		type: "building",
+		detect: {
+			minecrafters: 50
+		},
+		unlocked: false,
+		unlockMessage: "IN THIS MINECRAFT DAY, SO BEAUTIFUL\n(Achievement Unlocked)"
+	},
+	cookingWithGas: {
+		name: "Cooking With Gas",
+		type: "building",
+		detect: {
+			labkits: 50
+		},
+		unlocked: false,
+		unlockMessage: "Vastly inferior to electric technology.\n(Achievement Unlocked)"
+	},
+	sutandoPowah: {
+		name: "Sutando Powah",
+		type: "building",
+		detect: {
+			stands: 50
+		},
+		unlocked: false,
+		unlockMessage: "ORAORAORAORAORAORAORAORAORAORA--ORA!!\n(Achievement 「RETIRED」)"
+	},
+	longStrip: {
+		name: "The Long Strip",
+		type: "resource",
+		detect: {
+			land: 1000000000000
+		},
+		unlocked: false,
+		unlockMessage: "You've managed to rack up 1000 square meters of virgin ground at once.\n(Achievement Unlocked)"
+	},
+	governmentLand: {
+		name: "Government Land",
+		type: "resource",
+		detect: {
+			stakedLand: 1000000000000
+		},
+		unlocked: false,
+		unlockMessage: "The stakes are high. Real high.\n(Achievement Unlocked)"
+	},
+	twoPointTwoPounds: {
+		name: "Two Point Two Pounds",
+		type: "resource",
+		detect: {
+			pitchblende: 1000000000000
+		},
+		unlocked: false,
+		unlockMessage: "A proper lump.\n(Achievement Unlocked)"
+	},
+	radioactive: {
+		name: "Radioactive, Radioactive!",
+		type: "resource",
+		detect: {
+			uraniumOre: 1000000000000
+		},
+		unlocked: false,
+		unlockMessage: "I'm waking up, I feel it in my bones. Enough to threaten the structural integrity of my skeletal system.\n(Achievement Unlocked)"
+	},
+	bigOne: {
+		name: "Big One",
+		type: "resource",
+		detect: {
+			money: 1000000000000
+		},
+		unlocked: false,
+		unlockMessage: "Grand.\n(Achievement Unlocked)"
+	},
+	dogAchievement: {
+		name: "Dog Achievement",
+		type: "building",
+		detect: {
+			dogs: 100
+		},
+		unlocked: false,
+		unlockMessage: "Ten dogs. Hey, not every achievement has to have witty unlock text.\n(Achievement Unlocked)"
+	},
+	stakebotStakeout: {
+		name: "Stakeout",
+		type: "building",
+		detect: {
+			stakebots: 100
+		},
+		unlocked: false,
+		unlockMessage: "It's a stakebot stakeout! ... No? Nothing?\n(Achievement Unlocked)"
+	},
+	miningAway: {
+		name: "MINING AWAY",
+		type: "building",
+		detect: {
+			minecrafters: 100
+		},
+		unlocked: false,
+		unlockMessage: "IN THIS MINECRAFT DAY, SO BEAUTIFUL\n(Achievement Unlocked)"
+	},
+	cookingWithGas: {
+		name: "Cooking With Gas",
+		type: "building",
+		detect: {
+			labkits: 100
+		},
+		unlocked: false,
+		unlockMessage: "Vastly inferior to electric technology.\n(Achievement Unlocked)"
+	},
+	sutandoPowah: {
+		name: "Sutando Powah",
+		type: "building",
+		detect: {
+			stands: 100
 		},
 		unlocked: false,
 		unlockMessage: "ORAORAORAORAORAORAORAORAORAORA--ORA!!\n(Achievement 「RETIRED」)"
