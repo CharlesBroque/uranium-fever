@@ -259,14 +259,14 @@ var cheevos = {
 		unlocked: false,
 		unlockMessage: "Vastly inferior to electric technology.\n(Achievement Unlocked)"
 	},
-	sutandoPowah: {
-		name: "Sutando Powah",
+	standingUp: {
+		name: "Standing Up",
 		type: "building",
 		detect: {
 			stands: 10
 		},
 		unlocked: false,
-		unlockMessage: "ORAORAORAORAORAORAORAORAORAORA--ORA!!\n(Achievement 「RETIRED」)"
+		unlockMessage: "Upstanding.\n(Achievement 「RETIRED」)"
 	},
 	squareKilometer: {
 		name: "Square Kilometer",
@@ -403,131 +403,131 @@ var cheevos = {
 		unlocked: false,
 		unlockMessage: "'Hey Jimmy, what would you do with a billion dollars?'\n'Buy a dog. What else?'\n(Achievement Unlocked)"
 	},
-	dogAchievement: {
-		name: "Dog Achievement",
+	midcenturyMiracle: {
+		name: "Midcentury Miracle",
 		type: "building",
 		detect: {
 			dogs: 50
 		},
 		unlocked: false,
-		unlockMessage: "Ten dogs. Hey, not every achievement has to have witty unlock text.\n(Achievement Unlocked)"
+		unlockMessage: "That's, like, 50 dogs, man.\n(Achievement Unlocked)"
 	},
-	stakebotStakeout: {
-		name: "Stakeout",
+	highStakes: {
+		name: "High Stakes",
 		type: "building",
 		detect: {
 			stakebots: 50
 		},
 		unlocked: false,
-		unlockMessage: "It's a stakebot stakeout! ... No? Nothing?\n(Achievement Unlocked)"
+		unlockMessage: "I've used this pun already.\n(Achievement Unlocked)"
 	},
-	miningAway: {
-		name: "MINING AWAY",
+	laborUnion: {
+		name: "Labor Union",
 		type: "building",
 		detect: {
 			minecrafters: 50
 		},
 		unlocked: false,
-		unlockMessage: "IN THIS MINECRAFT DAY, SO BEAUTIFUL\n(Achievement Unlocked)"
+		unlockMessage: "No! Not the regulations!\n(Achievement Unlocked)"
 	},
-	cookingWithGas: {
-		name: "Cooking With Gas",
+	caustic: {
+		name: "Caustic",
 		type: "building",
 		detect: {
 			labkits: 50
 		},
 		unlocked: false,
-		unlockMessage: "Vastly inferior to electric technology.\n(Achievement Unlocked)"
+		unlockMessage: "Only the best waste products.\n(Achievement Unlocked)"
 	},
-	sutandoPowah: {
-		name: "Sutando Powah",
+	theReasonYouLost: {
+		name: "The Reason You Lost",
 		type: "building",
 		detect: {
 			stands: 50
 		},
 		unlocked: false,
-		unlockMessage: "ORAORAORAORAORAORAORAORAORAORA--ORA!!\n(Achievement 「RETIRED」)"
+		unlockMessage: "You really pissed me off.\n(Achievement 「RETIRED」)"
 	},
-	longStrip: {
-		name: "The Long Strip",
+	threePointFiveNevadas: {
+		name: "3.5 Nevadas",
 		type: "resource",
 		detect: {
 			land: 1000000000000
 		},
 		unlocked: false,
-		unlockMessage: "You've managed to rack up 1000 square meters of virgin ground at once.\n(Achievement Unlocked)"
+		unlockMessage: "One square megameter. Also known as the land area in 3.5 Nevadas.\n(Achievement Unlocked)"
 	},
-	governmentLand: {
-		name: "Government Land",
+	midwestTerritory: {
+		name: "Midwest Territory",
 		type: "resource",
 		detect: {
 			stakedLand: 1000000000000
 		},
 		unlocked: false,
-		unlockMessage: "The stakes are high. Real high.\n(Achievement Unlocked)"
+		unlockMessage: "3.5 Nevadas is on the order of 5/6 Alaskas.\n(Achievement Unlocked)"
 	},
-	twoPointTwoPounds: {
-		name: "Two Point Two Pounds",
+	megaton: {
+		name: "Megaton",
 		type: "resource",
 		detect: {
 			pitchblende: 1000000000000
 		},
 		unlocked: false,
-		unlockMessage: "A proper lump.\n(Achievement Unlocked)"
+		unlockMessage: "This'll show them!\n(Achievement Unlocked)"
 	},
-	radioactive: {
-		name: "Radioactive, Radioactive!",
+	nationalSecurity: {
+		name: "A Matter of National Security",
 		type: "resource",
 		detect: {
 			uraniumOre: 1000000000000
 		},
 		unlocked: false,
-		unlockMessage: "I'm waking up, I feel it in my bones. Enough to threaten the structural integrity of my skeletal system.\n(Achievement Unlocked)"
+		unlockMessage: "This is getting out of hand.\n(Achievement Unlocked)"
 	},
-	bigOne: {
-		name: "Big One",
+	economicSuperpower: {
+		name: "Economic Superpower",
 		type: "resource",
 		detect: {
 			money: 1000000000000
 		},
 		unlocked: false,
-		unlockMessage: "Grand.\n(Achievement Unlocked)"
+		unlockMessage: "'One TRILLION dollars!!'\n(Achievement Unlocked)"
 	},
-	dogAchievement: {
-		name: "Dog Achievement",
+	OneOhOneMinusOne: {
+		name: "101 - 1 Dalmations",
 		type: "building",
 		detect: {
 			dogs: 100
 		},
 		unlocked: false,
-		unlockMessage: "Ten dogs. Hey, not every achievement has to have witty unlock text.\n(Achievement Unlocked)"
+		unlockMessage: "Dogmeat didn't make it.\n(Achievement Unlocked)"
 	},
-	stakebotStakeout: {
-		name: "Stakeout",
+	runningOutOfPuns: {
+		name: "Running Out of Puns",
 		type: "building",
 		detect: {
 			stakebots: 100
 		},
 		unlocked: false,
-		unlockMessage: "It's a stakebot stakeout! ... No? Nothing?\n(Achievement Unlocked)"
+		unlockMessage: "100 Stakebots. I got nothin'.\n(Achievement Unlocked)"
 	},
-	miningAway: {
-		name: "MINING AWAY",
+	dedicatedServer: {
+		name: "Dedicated Server",
 		type: "building",
 		detect: {
 			minecrafters: 100
 		},
 		unlocked: false,
-		unlockMessage: "IN THIS MINECRAFT DAY, SO BEAUTIFUL\n(Achievement Unlocked)"
+		unlockMessage: "Come on in. We have Hunger Games, Spleef, and other MineCrap.\n(Achievement Unlocked)"
 	},
-	cookingWithGas: {
-		name: "Cooking With Gas",
+	walterWouldBeProud: {
+		name: "Walter Would Be Proud",
 		type: "building",
 		detect: {
 			labkits: 100
 		},
 		unlocked: false,
-		unlockMessage: "Vastly inferior to electric technology.\n(Achievement Unlocked)"
+		unlockMessage: "You're god damn right.\n(Achievement Unlocked)"
 	},
 	sutandoPowah: {
 		name: "Sutando Powah",
