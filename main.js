@@ -951,6 +951,23 @@ function claimPrestige() {
 			};
 		};
 		upgradeStrength = 0.1 * (1 + claimedPrestige);
+		for (var i in resourceObject) {
+			if (resourceObject.hasOwnProperty(i)) {
+				resourceObject[i] = 0;
+			};
+		};
+		for (var i in tierOneObject) {
+			if (tierOneObject.hasOwnProperty(i)) {
+				tierOneObject[i] = 0;
+				tierOneUpgradeObject[i] = 0;
+			};
+		};
+		ticks = 0;
+		priceObject = initPriceObject;
+		upgradePriceObject = initUpgradePriceObject;
+		clickPower = 1;
+		clickUpgradePrice = 10;
+		clickMult = 2.5;
 		save();
 		location.reload();
 	};
